@@ -87,6 +87,7 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
     function alert($server,$result_array,$options=array()) 
 
     {
+        $email_message = '';
         if ($options['subject_line']) {
             $subject = $options['subject_line'];
         } else {
@@ -102,7 +103,7 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
             $smtp_client->setDebug(true);
         }
     	$sizeof_result_array = sizeof($result_array);
-    	for($i=0;$i<$sizeof_result_array;$i++) {
+    	for ($i=0;$i<$sizeof_result_array;$i++) {
             $result = $result_array[$i];
             $host = $result['host'];
             $service = $result['service'];
@@ -119,7 +120,7 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
             $alert_line = str_replace('%c',$code,$alert_line);
             $email_message .= $alert_line."\r\n";
         }
-    	$smtp_client->quotedata(&$email_message);
+    	$smtp_client->quotedata($email_message);
         $e = $smtp_client->connect();
         if (!PEAR::isError($e)) {
             $e = $smtp_client->mailFrom($server);

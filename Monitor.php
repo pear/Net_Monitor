@@ -62,6 +62,22 @@ class Net_Monitor
     /**
      * Array of options to be used in the current monitoring session
      *
+     * Options are:
+     * <ul>
+     * <li> state_directory - the directory where the state file gets saved
+     * <li> state_file - the name of the state file
+     * <li> subject_line - the subject line of the alert message
+     * <li> alert_line - the format string for the alert where:
+     *     <ul>
+     *     <li>%h = host
+     *     <li>%s = service
+     *     <li>%m = message
+     *     <li>%c = code
+     *     </ul>
+     * <li> notify_change - send alerts only on state change
+     * <li> notify_ok - send an alert when a service returns to a code 200 state
+     * <li> smtp_debug - send debugging output to STDOUT for the SMTP alert
+     *
      * @access private
      * @var array $_options
      */
@@ -70,7 +86,8 @@ class Net_Monitor
                           'subject_line'    => 'Net_Monitor Alert',
                           'alert_line'      => '%h: %s: %m',
                           'notify_change'   => 1,
-                          'notify_ok'       => 1
+                          'notify_ok'       => 1,
+                          'smtp_debug'      => FALSE
                          );
     /**
      * Array of client objects to be used when testing a service
@@ -257,10 +274,6 @@ class Net_Monitor
 
     {
         $client =& $this->_clients[$service];
-        if (!is_object($client)) { //if an client has not yet been created for this service, create one
-            $this->client[$service] =& $this->getClient($service);
-            $client =& $this->_clients[$service];
-        }
         return $client->check($server);
     }
     /** 
@@ -283,7 +296,7 @@ class Net_Monitor
                 $type = $sub_array[$j];
                 if (!in_array($type,$types_array)) {
                     $types_array[] = $type;
-                    $this->_clients[$type] = $this->getClient($type);
+                    $this->_clients[$type] =& $this->getClient($type);
                 }
             }
         }
@@ -307,7 +320,7 @@ class Net_Monitor
             foreach($sub_array as $alert_type => $method) {
                 if (!in_array($alert_type,$current_alerters)) {
                     $current_alerters[] = $alert_type;
-                    $this->_alerters[$alert_type] = $this->getAlerter($alert_type);
+                    $this->_alerters[$alert_type] =& $this->getAlerter($alert_type);
                  }
             }
         }
@@ -363,12 +376,8 @@ class Net_Monitor
 
     {
         $alerter =& $this->_alerters[$method];
-        if (!is_object($alerter)) { //if an alerter for this method has not already been created, create one
-            $this->_alerters[$method] =& $this->getAlerter($method);
-            $alerter =& $this->_alerters[$method];
-        }
         return $alerter->alert($server,$this->_results_diff,$this->_options);
-    }    
+    }
     /** 
      * function saveState
      *
