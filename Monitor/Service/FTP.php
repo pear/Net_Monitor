@@ -23,7 +23,7 @@
  * @author Robert Peake <robert@peakepro.com>
  * @copyright 2004
  * @license http://www.php.net/license/3_0.txt
- * @version 0.1.0
+ * @version 0.2.0
  */
 
 /**
@@ -95,7 +95,7 @@ class Net_Monitor_Service_FTP extends Net_Monitor_Service
     	    return false;
     	} else {
     	    $this->_last_code = 0;
-    	    return array('host' => $host, 'service' => $this->_service, 'message' => $e->getMessage(), 'code' => 0); 
+    	    return array(0, $e->getMessage()); 
     	}
     }
 }

@@ -23,7 +23,7 @@
  * @author Robert Peake <robert@peakepro.com>
  * @copyright 2004
  * @license http://www.php.net/license/3_0.txt
- * @version 0.1.0
+ * @version 0.2.0
  */
 /**
  * require and extend the Net_Monitor_Service class
@@ -94,7 +94,7 @@ class Net_Monitor_Service_SMTP extends Net_Monitor_Service
         if (PEAR::isError($e)) { 
             //return connection-specific error string
             $this->_last_code = $response;
-            return array('host' => $host, 'service' => $this->_service, 'message' => $e->getMessage(), 'code' => $response);
+            return array($response, $e->getMessage());
         } else { 
             //everything is OK
             $c->disconnect();

@@ -23,7 +23,7 @@
  * @author Robert Peake <robert@peakepro.com>
  * @copyright 2004
  * @license http://www.php.net/license/3_0.txt
- * @version 0.1.0
+ * @version 0.2.0
  */
 /**
  * require and extend the Net_Monitor_Service class
@@ -113,7 +113,7 @@ class Net_Monitor_Service_HTTP extends Net_Monitor_Service
             if (!$msg) {
     		    $msg = 'host not found';
             }
-    		$return = array('host' => $host, 'service' => $this->_service,'message' => $msg, 'code' => $response);
+    		$return = array($response, $msg);
         }
     	$this->_last_code = $response;
         return $return;

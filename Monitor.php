@@ -29,7 +29,7 @@
  * @author Robert Peake <robert@peakepro.com>
  * @copyright 2004
  * @license http://www.php.net/license/3_0.txt
- * @version 0.1.0
+ * @version 0.2.0
  * 
  */
 /**
@@ -53,7 +53,7 @@ class Net_Monitor
      */
     var $_services = array();
     /**
-     * Array of alerts to be sent
+     * Array of alerts to be sent organized by protocols
      *
      * @access private
      * @var array $_alerts
@@ -152,7 +152,7 @@ class Net_Monitor
     function setOptions($options) 
 
     {
-        foreach($options as $key => $value) {
+        foreach ($options as $key => $value) {
             $this->_options[$key] = $value;
         }
     }
@@ -193,7 +193,14 @@ class Net_Monitor
     function setAlerts($alerts) 
 
     {
-        $this->_alerts = $alerts;
+        foreach ($alerts as $user => $parAlert) {
+            foreach ($parAlert as $proto => $param) {
+                if (!isset($this->_alerts[$proto])) {
+                    $this->_alerts[$proto] = array();
+                }
+                $this->_alerts[$proto][$user] = $param;
+            }
+        }
     }
     /** 
      * function checkAll
@@ -212,12 +219,11 @@ class Net_Monitor
         //check all services and populate the _results array
         if (is_array($this->_services) && sizeof($this->_services) > 0) {
             $this->loadClients(); //load client objects once and only once per service
-            foreach($this->_services as $server => $services) {
-                for ($i=0; $i<sizeof($services); $i++) {
-                    $service = $services[$i];
+            foreach ($this->_services as $server => $services) {
+                foreach ($services as $service) {
                     $result = $this->check($server,$service);
                     if ($result) {
-                        $this->_results[] = $result;
+                        $this->_results[$server][$service] = $result;
                     }
                 }
             }
@@ -227,7 +233,7 @@ class Net_Monitor
         if (is_array($this->_results) && sizeof($this->_results) > 0) {
             $last_state = $this->getState();
             $this->saveState();
-            $this->_results_diff = $this->stateDiff($this->_results,$last_state);
+            $this->_results_diff = $this->stateDiff($last_state);
             /* UNCOMMENT THE FOLLOWING TO DEBUG DIFFERENTIALS
             //  print "Last state: \n\n";
             //  print_r($last_state);
@@ -242,17 +248,15 @@ class Net_Monitor
             if (is_array($this->_alerts) && sizeof($this->_alerts) > 0) {
                 $this->loadAlerters();
                 //loop through alerts, sending the result message
-                foreach($this->_alerts as $user => $alert_array) {
-                    foreach($alert_array as $method => $server) {
-                        $this->alert($method,$server);
-                    }
+                foreach ($this->_alerts as $method => $alert_array) {
+                    $this->alert($method, $alert_array);
                 }
             } else {
                 //nobody to alert? print the result to STDOUT
-                $results = $this->_results_diff;
-                $sizeof_results = sizeof($results);
-                for($i=0; $i < $sizeof_results; $i++) {
-                    $this->printAlert($results[$i]);
+                foreach ($this->_results_diff as $host=>$results) {
+                    foreach ($results as $service=>$result) {
+                        $this->printAlert($host, $service, $result);
+                    }
                 }
             }
             return true;
@@ -313,15 +317,11 @@ class Net_Monitor
     function loadAlerters() 
 
     {
-        $alerts_array = array_values($this->_alerts);
-        $current_alerters = array_keys($this->_alerters);
-        for ($i=0; $i<sizeof($alerts_array); $i++) {
-            $sub_array = $alerts_array[$i];
-            foreach($sub_array as $alert_type => $method) {
-                if (!in_array($alert_type,$current_alerters)) {
-                    $current_alerters[] = $alert_type;
-                    $this->_alerters[$alert_type] =& $this->getAlerter($alert_type);
-                 }
+        $alerts_array = array_keys($this->_alerts);
+        foreach ($alerts_array as $alert_type) {
+            if (!isset($this->_alerters[$alert_type])) {
+                $this->_alerters[$alert_type] =
+                    & $this->getAlerter($alert_type);
             }
         }
     }
@@ -462,68 +462,36 @@ class Net_Monitor
      * $_options['notify_change'] is set to false.
      *
      * @access private
-     * @param array primary
-     * @param array secondary
+     * @param array $secondary states to compare to current
      * @return array
      */
-    function stateDiff($primary,$secondary) 
-
-    {
+    function stateDiff($secondary) {
         $return_array = array();
-        $sizeof_primary = sizeof($primary);
-        $sizeof_secondary = sizeof($secondary);
         //loop through primary array
-        for($i=0; $i < $sizeof_primary; $i++) {
-            $primary_sub = $primary[$i];
-            $ps_host = $primary_sub['host'];
-            $ps_service = $primary_sub['service'];
-            $ps_code = $primary_sub['code'];
-            //reindex secondary in case it has had values removed
-            $secondary = array_values($secondary);
-            $sizeof_secondary = sizeof($secondary);
-            //reset primary flags
-            $primary_sub_is_unique = true;
-            $primary_sub_changed = false;
-            //for each primary value, loop through secondary array
-            for($j = 0; $j < $sizeof_secondary; $j++) {
-                $secondary_sub = $secondary[$j];
-                $ss_host = $secondary_sub['host'];
-                $ss_service = $secondary_sub['service'];
-                $ss_code = $secondary_sub['code'];
-                if ($ss_host == $ps_host && $ss_service == $ps_service) {
-                    //host and service identical in secondary and primary
-                    if ($ss_code != $ps_code) {
+        foreach ($this->_results as $host=>$services) {
+            foreach ($services as $service=>$result) {
+                if (isset($secondary[$host][$service])) {
+                    // host and service identical in current and secondary
+                    if ($result[0] !== $secondary[$host][$service][0]) {
                          //different codes 
-                         if ($this->_options['notify_change']) {
+                         if($this->_options['notify_change']) {
                              //notify_change on; move to return
-                             $return_array[] = $primary_sub;
+                             $return_array[$host][$service] = $result;
                          }
-                         //flag this primary_sub as a change, not a unique
-                         $primary_sub_changed = true;
-                    } else {
-                         //code also identical in secondary and primary
-                         //therefore this primary_sub is not unique
-                         $primary_sub_is_unique = false;
                     }
-                    //remove from secondary
-                    unset($secondary[$j]);
+                // anyway unset so ok to withdrawn services to the end
+                unset( $secondary[$host][$service]);
+                } else { // it's a new host/service so to be announced
+                    $return_array[$host][$service] = $result;
                 }
             }
-            if ($primary_sub_is_unique && !$primary_sub_changed) {
-                //after all that checking, primary_sub is unique
-                //but not because it represents a host/service that has
-                //changed from one down state to another; move to return.
-                $return_array[] = $primary_sub;
-            }
         }
-        if ($this->_options['notify_ok'] && sizeof($secondary) > 0) {
-            //remaining states in secondary are marked OK and added to return
-            reset($secondary);
-            $sizeof_secondary = sizeof($secondary);
-            for($k = 0; $k < $sizeof_secondary; $k++) {
-                $secondary[$k]['code'] = 200;
-                $secondary[$k]['message'] = 'OK';
-                $return_array[] = $secondary[$k];
+        if($this->_options['notify_ok']) {
+            foreach ($secondary as $host=>$services) {
+                foreach ($services as $service=>$result) {
+                    //remaining states in secondary added OK to return
+                    $return_array[$host][$service] = array( 200, $result[1]);
+                }
             }
         }
         return $return_array;
@@ -561,56 +529,56 @@ class Net_Monitor
      * function resetHostState
      *
      * Resets the state for a single host ($host). Optionally takes in a
-     * second parameter, $service, whereby the function only
-     * resets the results for that particular host/service test.
+     * second parameter, $service which maybe an array, whereby the function only
+     * resets the results for that/those particular host/service test.
      *
      * @param string $host
-     * @param string $service
+     * @param mixed $service
      * @return void
      * @access public
      */
     function resetHostState($host,$service = null) 
 
     {
-         $last_state = $this->getState();
-         $sizeof_last_state = sizeof($last_state);
-         for($i=0; $i < $sizeof_last_state; $i++) {
-             $working_state = $last_state[$i];
-             if ($working_state['host'] == $host) {
-                 if ($service != null && $working_state['service'] != $service) {
-                     //hosts match but services don't match? place in new array
-                     $new_array[] = $working_state;
-                 }
-             } else {
-                 //different hosts? place in new array
-                 $new_array[] = $working_state;
-             }
-         }
-         $this->saveState($new_array);
-     }
+        $last_state = $this->getState();
+        if (!isset($last_state[$host])) {
+            return;
+        }
+        if ($service != null) {
+            if (is_array($service)) {
+                foreach ($service as $serelt) {
+                    unset($last_state[$host][$serelt]);
+                }
+            } else {
+                unset($last_state[$host][$service]);
+            }
+        } else {
+            unset($last_state[$host]);
+        }
+        $this->saveState($last_state);
+    }
      /** 
       * function printAlert
       *
-      * Prints the alert specified in the associative array ($array)
+      * Prints the alert for a host/service
       * to STDOUT. Formats the alert according to $_options['alert_line'].
       *
-      * @param array array
+      * @param string $host
+      * @param string $service
+      * @param array $result (code, message)
       * @return void
       * @access public
       */
-     function printAlert($array) 
-
-     {
+     function printAlert($host, $service, $result) {
          if ($this->_options['alert_line']) {
              $alert_line = $this->_options['alert_line'];
          } else {
              $alert_line = '%h: %s: %m';
          }
-         $alert_line = str_replace('%h',$array['host'],$alert_line);
-         $alert_line = str_replace('%s',$array['service'],$alert_line);
-         $alert_line = str_replace('%m',$array['message'],$alert_line);
-         $alert_line = str_replace('%c',$array['code'],$alert_line);
-         print $alert_line."\r\n";
+         print str_replace(
+                    array('%h', '%s',    '%c',      '%m'),
+                    array($host,$service,$result[0],$result[1]),
+                    $alert_line)."\r\n";
      }
 }
 ?>

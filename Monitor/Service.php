@@ -24,7 +24,7 @@
  * @author Robert Peake <robert@peakepro.com>
  * @copyright 2004
  * @license http://www.php.net/license/3_0.txt
- * @version 0.1.0
+ * @version 0.2.0
  */
 /** 
  * class Net_Monitor_Service
@@ -61,7 +61,7 @@ class Net_Monitor_Service
      * function check
      * 
      * Checks the specified server ($server) for availability.
-     * Returns false on success, or a notification array on failure.
+     * Returns false on success, or a notification array ( code, message) on failure.
      *
      * @param mixed server
      * @return mixed
@@ -69,7 +69,7 @@ class Net_Monitor_Service
     function check($server) 
 
     {
-        return array('host' => $server, 'service' => $this->_service, 'message' => 'Not yet implemented.', 'code' => -1);
+        return array( -1, 'not yet implemented');
     }
 }
 ?>
