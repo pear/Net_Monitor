@@ -24,7 +24,7 @@
  * @author Robert Peake <robert@peakepro.com>
  * @copyright 2004
  * @license http://www.php.net/license/3_0.txt
- * @version 0.0.6 (proposal)
+ * @version 0.0.7
  */
 /**
  * requires and extends the Net_Monitor_Alert class
@@ -44,21 +44,26 @@ require_once 'Net/SMS.php';
 class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
 {
     /**
-     * @var string _service
+     * Defines the name of the service
+     *
+     * @var string $_service
      * @access private
      */
     var $_service = 'SMS';
     /**
-     * @var object _alert
+     * The alert object to be used
+     *
+     * @var object $_alert
      * @access private
      */
-    var $_alert = NULL;
+    var $_alert = null;
     /** 
      * function Net_Monitor_Alert_SMS
      *
      * @access public
      */
     function Net_Monitor_Alert_SMS()
+
     {
         $this->_alert = new Net_SMS();
     }

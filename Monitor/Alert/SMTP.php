@@ -24,7 +24,7 @@
  * @author Robert Peake <robert@peakepro.com>
  * @copyright 2004
  * @license http://www.php.net/license/3_0.txt
- * @version 0.0.6 (proposal)
+ * @version 0.0.7
  */
 /**
  * requires and extends the Net_Monitor_Alert class
@@ -46,21 +46,26 @@ require_once 'Net/SMTP.php';
 class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
 {
     /**
-     * @var string _service
+     * Defines the name of the service
+     *
+     * @var string $_service
      * @access private
      */
     var $_service = 'SMTP';
     /**
-     * @var object _alert
+     * The alert object to be used
+     *
+     * @var object $_alert
      * @access private
      */
-    var $_alert = NULL;
+    var $_alert = null;
     /** 
      * function Net_Monitor_Alert_SMTP
      *
      * @access public
      */
     function Net_Monitor_Alert_SMTP()
+
     {
         $this->_alert = new Net_SMTP();
     }
@@ -68,6 +73,11 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
      * function alert
      *
      * Sends the specified results to the specified SMTP server
+     * <ul>
+     * <li> $server is the SMTP server
+     * <li> $results is the array of results to send
+     * </ul>
+     * Returns true on success, PEAR_Error object on failure
      *
      * @access private
      * @param mixed server
@@ -75,11 +85,12 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
      * @return mixed
      */
     function alert($server,$result_array,$options=array()) 
+
     {
         if ($options['subject_line']) {
             $subject = $options['subject_line'];
         } else {
-            Pear::raiseError('Using default subject', NULL, PEAR_ERROR_EXCEPTION, E_USER_WARNING);
+            PEAR::raiseError('Using default subject', null, PEAR_ERROR_EXCEPTION, E_USER_WARNING);
             $subject = 'Net_Monitor Alert';
         }
         $server_array = explode('@',$server);

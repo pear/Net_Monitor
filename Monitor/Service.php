@@ -24,7 +24,7 @@
  * @author Robert Peake <robert@peakepro.com>
  * @copyright 2004
  * @license http://www.php.net/license/3_0.txt
- * @version 0.0.6 (proposal)
+ * @version 0.0.7
  */
 /** 
  * class Net_Monitor_Service
@@ -37,32 +37,39 @@
 class Net_Monitor_Service
 {
     /**
-     * @var string _service
+     * Defines the name of the service
+     *
+     * @var string $_service
      * @access private
      */
     var $_service = 'Generic';
     /**
-     * @var object _client
+     * The client object used for testing
+     *
+     * @var object $_client
      * @access private
      */
-    var $_client = NULL;
+    var $_client = null;
     /**
-     * @var int _last_code
+     * The last response code received
+     *
+     * @var int $_last_code
      * @access private
      */
     var $_last_code = -1;
     /** 
      * function check
      * 
-     * Checks the specified server for availability.
+     * Checks the specified server ($server) for availability.
      * Returns false on success, or a notification array on failure.
      *
      * @param mixed server
      * @return mixed
      */
     function check($server) 
+
     {
-        return array('host' => $server, 'service' => $this->_service, 'message' => "not yet implemented", 'code' => -1);
+        return array('host' => $server, 'service' => $this->_service, 'message' => 'Not yet implemented.', 'code' => -1);
     }
 }
 ?>

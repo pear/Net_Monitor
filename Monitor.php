@@ -29,7 +29,7 @@
  * @author Robert Peake <robert@peakepro.com>
  * @copyright 2004
  * @license http://www.php.net/license/3_0.txt
- * @version 0.0.6 (proposal)
+ * @version 0.0.7
  * 
  */
 /**
@@ -45,12 +45,26 @@ require_once 'PEAR.php';
  */
 class Net_Monitor 
 {
-    /**#@+
+    /**
+     * Array of services to check
+     *
      * @access private
-     * @var array
+     * @var array $_services
      */
     var $_services = array();
+    /**
+     * Array of alerts to be sent
+     *
+     * @access private
+     * @var array $_alerts
+     */
     var $_alerts = array();
+    /**
+     * Array of options to be used in the current monitoring session
+     *
+     * @access private
+     * @var array $_options
+     */
     var $_options = array('state_directory' => '/tmp/',
                           'state_file'      => 'Net_Monitor_State',
                           'subject_line'    => 'Net_Monitor Alert',
@@ -58,29 +72,53 @@ class Net_Monitor
                           'notify_change'   => 1,
                           'notify_ok'       => 1
                          );
+    /**
+     * Array of client objects to be used when testing a service
+     *
+     * @access private
+     * @var array $_clients
+     */
     var $_clients = array();
+    /**
+     * Array of alerter objects to be used when sending alerts
+     *
+     * @access private
+     * @var array $_alerters
+     */
     var $_alerters = array();
+    /**
+     * Array of results from most recent service check
+     *
+     * @access private
+     * @var array $_results
+     */
     var $_results = array();
+    /**
+     * Array of differences in results between previous session and this session
+     *
+     * @access private
+     * @var array $_results_diff
+     */
     var $_results_diff = array();
-    /**#@-*/
-    
+
     /** 
      * function Net_Monitor
      *
      * @access public
-     * @param array services
-     * @param array alerts
+     * @param array $services
+     * @param array $alerts
      * @return void
      */
     function Net_Monitor($services=array(),$alerts=array(),$options=array()) 
+
     {
-        if ($options && sizeof($options) > 0) {
+        if (is_array($options) && sizeof($options) > 0) {
             $this->setOptions($options);
         }
-        if ($services && sizeof($services) > 0) {
+        if (is_array($services) && sizeof($services) > 0) {
             $this->setServices($services);
         }
-        if ($alerts && sizeof($alerts) > 0) {
+        if (is_array($alerts) && sizeof($alerts) > 0) {
             $this->setAlerts($alerts);
         }
     }
@@ -88,13 +126,14 @@ class Net_Monitor
      * function setOptions
      *
      * <p>Sets additional options for the class</p>
-     * <p>Merges input array with $_options</p>
+     * <p>Merges input array ($options) with $this->_options</p>
      * 
      * @access public
-     * @param array options
+     * @param array $options
      * @return void
      */
     function setOptions($options) 
+
     {
         foreach($options as $key => $value) {
             $this->_options[$key] = $value;
@@ -104,7 +143,7 @@ class Net_Monitor
      * function setServices
      *
      * <p>Sets the services to monitor for the class</p>
-     * <p>Overwrites $_services with input array</p>
+     * <p>Overwrites $_services with input array ($services)</p>
      * <p>Net_Monitor_Services are of the form: <br />
      * <pre>
      * $services = array('foo.example.com'=>array('SMTP','DNS'),
@@ -112,10 +151,11 @@ class Net_Monitor
      * </pre>
      * 
      * @access public
-     * @param array services
+     * @param array $services
      * @return void
      */
     function setServices($services) 
+
     {
         $this->_services = $services;
     }
@@ -123,17 +163,18 @@ class Net_Monitor
      * function setAlerts
      *
      * <p>Sets the alerts for the class</p>
-     * <p>Overwrites $_alerts with input array</p>
+     * <p>Overwrites $_alerts with input array ($alerts)</p>
      * <p>Net_Monitor_Alerts are of the form: <br />
      * <pre>
      * $alerts = array('User1' => array('SMTP'=>'user1@example.com'),
      *                 'User2' => array('SMTP'=>'user2@example.com'));
      * </pre>
      *
-     * @param array alerts
+     * @param array $alerts
      * @return void
      */
     function setAlerts($alerts) 
+
     {
         $this->_alerts = $alerts;
     }
@@ -146,6 +187,7 @@ class Net_Monitor
      * @return void
      */
     function checkAll() 
+
     {
         //initialize the _results and _results_diff arrays
         $this->_results = array();
@@ -204,19 +246,20 @@ class Net_Monitor
     /** 
      * function check
      *
-     * Check a single service on a single server
+     * Check a single service ($service) on a single server ($server)
      *
      * @access public
-     * @param mixed server
-     * @param string service
+     * @param mixed $server
+     * @param string $service
      * @return mixed 
      */
     function check($server,$service) 
+
     {
-        $client = $this->_clients[$service];
+        $client =& $this->_clients[$service];
         if (!is_object($client)) { //if an client has not yet been created for this service, create one
-            $this->client[$service] = $this->getClient($service);
-            $client = $this->_clients[$service];
+            $this->client[$service] =& $this->getClient($service);
+            $client =& $this->_clients[$service];
         }
         return $client->check($server);
     }
@@ -230,6 +273,7 @@ class Net_Monitor
      * @return void
      */
     function loadClients() 
+
     {
         $services_array = array_values($this->_services);
         $types_array = array_keys($this->_clients);
@@ -251,8 +295,10 @@ class Net_Monitor
      * is only used once.
      *
      * @access public
+     * @return void
      */
     function loadAlerters() 
+
     {
         $alerts_array = array_values($this->_alerts);
         $current_alerters = array_keys($this->_alerters);
@@ -269,15 +315,16 @@ class Net_Monitor
     /** 
      * function getClient
      *
-     * Returns a client of the specificed type. <em>Note:
+     * Returns a client of the type specified in $type. <em>Note:
      * does not check to see if this client has already been
      * loaded into Net_Monitor::clients - that is handled elsewhere.</em>
      *
      * @access private
-     * @param string type
-     * @return void
+     * @param string $type
+     * @return object
      */
-    function getClient($type) 
+    function &getClient($type) 
+
     {
         require_once "Net/Monitor/Service/$type.php";
         $service = "Net_Monitor_Service_$type";
@@ -286,16 +333,17 @@ class Net_Monitor
     /** 
      * function getAlerter
      *
-     * Returns an alerter of the specificed type. <em>Note:
+     * Returns an alerter of the type specified by $type. <em>Note:
      * does not check to see if this alerter has already been
      * loaded into Net_Monitor::alerters - that is handled elsewhere.</em>
      *
      * @access private
-     * @param string type
-     * @return void
+     * @param string $type
+     * @return object
      *
      */
-    function getAlerter($type) 
+    function &getAlerter($type) 
+
     {
         require_once "Net/Monitor/Alert/$type.php";
         $alerter = "Net_Monitor_Alert_$type";
@@ -304,45 +352,49 @@ class Net_Monitor
     /** 
      * function alert
      *
-     * Send a single alert of the specified method to the specified server
+     * Send a single alert specified in $method to the server specified in $server
      *
      * @access private
-     * @param string method
+     * @param string $method
      * @param mixed $server
      *
      */
     function alert($method,$server) 
+
     {
-        $alerter = $this->_alerters[$method];
+        $alerter =& $this->_alerters[$method];
         if (!is_object($alerter)) { //if an alerter for this method has not already been created, create one
-            $this->_alerters[$method] = $this->getAlerter($method);
-            $alerter = $this->_alerters[$method];
+            $this->_alerters[$method] =& $this->getAlerter($method);
+            $alerter =& $this->_alerters[$method];
         }
         return $alerter->alert($server,$this->_results_diff,$this->_options);
     }    
     /** 
      * function saveState
      *
-     * Saves the current _results array to the directory specified in
-     * _options['state_directory'] as a file named _options['state_file'].
-     * If an array is passed to the function, that array is saved as state,
+     * Saves the current $_results array to the directory specified in
+     * $_options['state_directory'] as a file named $_options['state_file'].
+     *
+     * If an array ($results) is passed to the function, that array is saved as state,
      * otherwise this function acts upon $_results.
      *
      * @access public
-     * @param array results
+     * @param array $results
      * @return void
      *
      */
-    function saveState($results = NULL) {
+    function saveState($results = null)
+
+    {
         $options = $this->_options;
         $path = $options['state_directory'];
         $file = $options['state_file'];
         if (!is_writable($path)) {
-            Pear::raiseError($path.' is not writeable');
+            PEAR::raiseError($path.' is not writeable');
         }
         if (file_exists($path.$file)) {
             if (!is_writable($path.$file)) {
-                Pear::raiseError($path.$file.' exists but is not writeable');
+                PEAR::raiseError($path.$file.' exists but is not writeable');
             }
         }
         $fp = @fopen($path.$file,'w');
@@ -357,20 +409,22 @@ class Net_Monitor
      * function getState
      *
      * Retrieves previous state information from the directory specified in
-     * _options['state_directory'] via a  file named _options['state_file']
+     * $_options['state_directory'] via a  file named $_options['state_file']
      *
      * @access public
      * @return array
      *
      */
-    function getState() {
+    function getState() 
+
+    {
         $my_line = "";
         $options = $this->_options;
         $path = $options['state_directory'];
         $file = $options['state_file'];
         if (file_exists($path.$file)) {
             if (!is_readable($path.$file)) {
-                Pear::raiseError($path.$file.' exists but is not readable');
+                PEAR::raiseError($path.$file.' exists but is not readable');
             }
         } else {
             return array();
@@ -386,8 +440,8 @@ class Net_Monitor
     /** 
      * function stateDiff
      *
-     * Computes the difference between a primary and secondary
-     * array representing state, i.e. all values in primary that 
+     * Computes the difference between the $primary and $secondary
+     * arrays representing state, i.e. all values in primary that 
      * are not already in secondary. 
      *
      * Also returns an OK status for values in secondary that are 
@@ -403,7 +457,9 @@ class Net_Monitor
      * @param array secondary
      * @return array
      */
-    function stateDiff($primary,$secondary) {
+    function stateDiff($primary,$secondary) 
+
+    {
         $return_array = array();
         $sizeof_primary = sizeof($primary);
         $sizeof_secondary = sizeof($secondary);
@@ -475,7 +531,9 @@ class Net_Monitor
      * @access public
      * @return boolean
      */
-     function resetState() {
+    function resetState() 
+
+    {
          $this->_results = array();
          $this->_results_diff = array();
          $options = $this->_options;
@@ -483,31 +541,34 @@ class Net_Monitor
          $file = $options['state_file'];
          if (file_exists($path.$file)) {
              if (!is_writable($path.$file)) {
-                 Pear::raiseError($path.$file.' exists but is not writeable');
+                 PEAR::raiseError($path.$file.' exists but is not writeable');
              }
              return unlink($path.$file);
          } else {
              return true;
          }
-     }
-     /** 
-      * function resetHostState
-      *
-      * Resets the state for a single host. Optionally take in a
-      * second parameter, service, whereby the function only
-      * resets the results for that particular host/service test.
-      *
-      * @param string host
-      * @return void
-      * @access public
-      */
-     function resetHostState($host,$service = NULL) {
+    }
+    /** 
+     * function resetHostState
+     *
+     * Resets the state for a single host ($host). Optionally takes in a
+     * second parameter, $service, whereby the function only
+     * resets the results for that particular host/service test.
+     *
+     * @param string $host
+     * @param string $service
+     * @return void
+     * @access public
+     */
+    function resetHostState($host,$service = null) 
+
+    {
          $last_state = $this->getState();
          $sizeof_last_state = sizeof($last_state);
          for($i=0; $i < $sizeof_last_state; $i++) {
              $working_state = $last_state[$i];
              if ($working_state['host'] == $host) {
-                 if ($service != NULL && $working_state['service'] != $service) {
+                 if ($service != null && $working_state['service'] != $service) {
                      //hosts match but services don't match? place in new array
                      $new_array[] = $working_state;
                  }
@@ -521,14 +582,16 @@ class Net_Monitor
      /** 
       * function printAlert
       *
-      * Prints the alert specified in the associative array
+      * Prints the alert specified in the associative array ($array)
       * to STDOUT. Formats the alert according to $_options['alert_line'].
       *
       * @param array array
       * @return void
       * @access public
       */
-     function printAlert($array) {
+     function printAlert($array) 
+
+     {
          if ($this->_options['alert_line']) {
              $alert_line = $this->_options['alert_line'];
          } else {

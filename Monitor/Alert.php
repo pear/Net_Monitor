@@ -23,7 +23,7 @@
  * @author Robert Peake <robert@peakepro.com>
  * @copyright 2004
  * @license http://www.php.net/license/3_0.txt
- * @version 0.0.6 (proposal)
+ * @version 0.0.7
  */
 /**
  * class Net_Monitor_Alert
@@ -36,12 +36,30 @@
  */
 class Net_Monitor_Alert
 {
+    /**
+     * Defines the name of the service
+     *
+     * @var string $_service
+     * @access private
+     */
     var $_service = 'Generic';
-    var $_alert = NULL;
+    /**
+     * The alert object used for sending alerts
+     *
+     * @var object $_alert
+     * @access private
+     */
+    var $_alert = null;
     /** 
      * function alert
      *
      * Sends the specified results to the specified server
+     * <ul>
+     * <li> $server is the server to alert
+     * <li> $result is the array of results
+     * <li> $options is the array of additional options
+     * </ul>
+     * Does not return a value.
      *
      * @access private
      * @param mixed server
@@ -49,6 +67,7 @@ class Net_Monitor_Alert
      * @return mixed
      */
     function alert($server,$results,$options=array()) 
+
     {
       print "ALERT: $server ".$this->_service." not yet implemented\n";
       print_r($results);

@@ -23,7 +23,7 @@
  * @author Robert Peake <robert@peakepro.com>
  * @copyright 2004
  * @license http://www.php.net/license/3_0.txt
- * @version 0.0.6 (proposal)
+ * @version 0.0.7
  */
 
 /**
@@ -46,17 +46,23 @@ require_once 'Net/DNS.php';
 class Net_Monitor_Service_DNS extends Net_Monitor_Service
 {
     /**
-     * @var string _service
+     * Defines the name of the service
+     *
+     * @var string $_service
      * @access private
      */
     var $_service = 'DNS';
     /**
-     * @var object _client
+     * The client object used for testing
+     *
+     * @var object $_client
      * @access private
      */
-    var $_client = NULL;
+    var $_client = null;
     /**
-     * @var int _last_code
+     * The last response code received
+     *
+     * @var int $_last_code
      * @access private
      */
     var $_last_code = -1;
@@ -66,19 +72,21 @@ class Net_Monitor_Service_DNS extends Net_Monitor_Service
      * @access public
      */
     function Net_Monitor_Service_DNS()
+
     {
         $this->_client = new Net_DNS_Resolver();
     }
     /** 
      * function check
      * 
-     * Checks the specified DNS server for availability.
+     * Checks the specified DNS server ($host) for availability.
      * Returns false on success, or a notification array on failure.
      *
      * @param mixed host
      * @return mixed
      */
     function check($host) 
+
     {
         $c = $this->_client;
     	$c->nameservers = array($host);

@@ -23,12 +23,12 @@
  * @author Robert Peake <robert@peakepro.com>
  * @copyright 2004
  * @license http://www.php.net/license/3_0.txt
- * @version 0.0.6 (proposal)
+ * @version 0.0.7
  */
 /**
  * require and extend the Net_Monitor_Service_HTTP class by re-implementing the prepare() method
  */
-require_once 'Net/Monitor/HTTP.php';
+require_once 'Net/Monitor/Service/HTTP.php';
 /** 
  * class Net_Monitor_Service_HTTPS
  *
@@ -41,12 +41,16 @@ require_once 'Net/Monitor/HTTP.php';
 class Net_Monitor_Service_HTTPS extends Net_Monitor_Service_HTTP
 {
     /**
-     * @var string _service
+     * Defines the name of the service
+     *
+     * @var string $_service
      * @access private
      */
     var $_service = 'HTTPS';
     /**
-     * @var string _prefix
+     * The prefix used to form a fully-qualified URL
+     *
+     * @var string $_prefix
      * @access public
      */
     var $_prefix = 'https://';
@@ -56,6 +60,7 @@ class Net_Monitor_Service_HTTPS extends Net_Monitor_Service_HTTP
      * @access public
      */
     function Net_Monitor_Service_HTTPS()
+
     {
         if (!extension_loaded('openssl')) {
     	    PEAR::raiseError('Net_Monitor_Service_HTTPS requires OpenSSL');
