@@ -19,11 +19,11 @@
     </maintainer>
   </maintainers>
   <release>
-    <version>0.2.0</version>
-    <date>2005-03-26</date>
+    <version>0.2.1</version>
+    <date>2005-03-28</date>
     <license>PHP License</license>
     <state>beta</state>
-    <notes>Now includes SMS support for clickatell and sms2email gateways</notes>
+    <notes>Minor update to provide compatability with new PHP header DocBlock format</notes>
     <deps>
       <dep type="pkg" rel="ge" version="1.0.0" optional="no">PEAR</dep>
       <dep type="pkg" rel="ge" version="1.2.2" optional="yes">Net_SMTP</dep>
@@ -51,6 +51,13 @@
     </filelist>
   </release>
   <changelog>
+    <release>
+        <version>0.2.0</version>
+        <date>2005-03-26</date>
+        <license>PHP License</license>
+        <state>beta</state>
+        <notes>Now includes SMS support for clickatell and sms2email gateways</notes>
+    </release>
     <release>
       <version>0.1.0</version>
       <date>2005-01-08</date>
