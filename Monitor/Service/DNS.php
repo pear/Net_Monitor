@@ -23,7 +23,7 @@
  * @author Robert Peake <robert@peakepro.com>
  * @copyright 2004
  * @license http://www.php.net/license/3_0.txt
- * @version 0.0.7
+ * @version 0.1.0
  */
 
 /**
