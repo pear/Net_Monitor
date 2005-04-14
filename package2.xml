@@ -39,7 +39,6 @@ http://pear.php.net/dtd/package-2.0.xsd">
     <file baseinstalldir="Net" name="README.txt" role="doc" />
    </dir> <!-- /doc -->
    <dir name="examples">
-    <file baseinstalldir="Net" name="bg.ini.php" role="doc" />
     <file baseinstalldir="Net" name="complex.php" role="doc" />
     <file baseinstalldir="Net" name="config.ini.php" role="doc" />
     <file baseinstalldir="Net" name="ini_example.php" role="doc" />
