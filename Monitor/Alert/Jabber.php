@@ -122,7 +122,6 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
      */
     function alert($server,$result_array,$options=array()) 
     {
-        print_r($server);
         $im_message = '';
         if (isset($options['alert_line'])) {
             $model_line = $options['alert_line'];
