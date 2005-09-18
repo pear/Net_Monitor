@@ -1,24 +1,20 @@
 <?php
-// +----------------------------------------------------------------------+
-// | PHP Version 4                                                        |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2005 The PHP Group                                |
-// +----------------------------------------------------------------------+
-// | This source file is subject to version 3.0 of the PHP license,       |
-// | that is bundled with this package in the file LICENSE, and is        |
-// | available at through the world-wide-web at                           |
-// | http://www.php.net/license/3_0.txt.                                  |
-// | If you did not receive a copy of the PHP license and are unable to   |
-// | obtain it through the world-wide-web, please send a note to          |
-// | license@php.net so we can mail you a copy immediately.               |
-// +----------------------------------------------------------------------+
-// | Author: Robert Peake <robert@peakepro.com>                           |
-// +----------------------------------------------------------------------+
-//
-// $Id$
-//
-// Remote service monitor alerter thru Jabber - WARNING: THIS IS AN EXPERIMENTAL PROOF OF CONCEPT SO FAR. THIS METHOD SENDS THE LOGIN AND PASSWORD AS PLAIN TEXT AND SHOULD NOT BE CONSIDERED SECURE.
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
 /**
+ * Remote service monitor alerter thru Jabber
+ *
+ * WARNING: THIS IS AN EXPERIMENTAL PROOF OF CONCEPT SO FAR. THIS METHOD SENDS 
+ * THE LOGIN AND PASSWORD AS PLAIN TEXT AND SHOULD NOT BE CONSIDERED SECURE.
+ * 
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This source file is subject to version 3.0 of the PHP license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
+ * the PHP License and are unable to obtain it through the web, please
+ * send a note to license@php.net so we can mail you a copy immediately.
+ * 
  * @package Net_Monitor
  * @author Robert Peake <robert@peakepro.com>
  * @copyright 2005
@@ -33,8 +29,8 @@ require_once 'Net/Monitor/Alert.php';
  * class Net_Monitor_Alert_Jabber
  *
  * @package Net_Monitor
- * @access public
  * @see Net_Monitor_Alert
+ * @access public
  */
 class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
 {
@@ -45,6 +41,7 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
      * @access private
      */
     var $_service = 'Jabber';
+
     /**
      * The alert object to be used (if any)
      *
@@ -52,6 +49,7 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
      * @access private
      */
     var $_alert = null;
+
     /**
      * The default port to be used
      *
@@ -59,6 +57,7 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
      * @access private
      */
     var $_port = 5222;
+
     /**
      * The resource name to specify to the server
      *
@@ -66,6 +65,7 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
      * @access private
      */
     var $_resource = 'Net_Monitor_Alert_Jabber';
+
     /**
      * Any socket error numbers
      *
@@ -73,6 +73,7 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
      * @access private
      */
     var $_sockErr = 0;
+
     /**
      * Any socket error messages
      *
@@ -80,6 +81,7 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
      * @access private
      */
     var $_sockErrMsg = false;
+
     /**
      * Max expected server response length
      *
@@ -87,8 +89,9 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
      * @access private
      */
     var $_maxResponseLength = 4096;
+
     /** 
-     * function Net_Monitor_Alert_Jabber
+     * constructor
      *
      * @access public
      */
@@ -98,9 +101,8 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
         //nothing to initialize
     }
     /** 
-     * function alert
-     *
      * Sends the alerts thru the specified Jabber servers and accounts
+     *
      * <li> $server is an array of key=>value
      *      where value is a string.
      *      Server defines these keys:
@@ -114,14 +116,15 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
      * </ul>
      * Returns true on success, PEAR_Error object on failure
      *
-     * @access private
-     * @param array server
-     * @param array results
-     * @param array options
+     * @param array $server Jabber server connection/authentication options
+     * @param array $results results to send
+     * @param array $options standard Net_Monitor options
      * @return mixed true or PEAR_Error
+     * @access private
      */
-    function alert($server,$result_array,$options=array()) 
+    function alert($server, $result_array, $options=array()) 
     {
+        print_r($server);
         $im_message = '';
         if (isset($options['alert_line'])) {
             $model_line = $options['alert_line'];
@@ -132,7 +135,7 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
             foreach ($services as $service=>$result) {
             $im_message .= str_replace(
                 array('%h', '%s',    '%c',      '%m'),
-                array($host,$service,$result[0],$result[1]),
+                array($host, $service, $result[0], $result[1]),
                 $model_line)."\r\n";
             }
         }
@@ -162,18 +165,17 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
         return true;
     } // alert()
     /**
-     * function sendAlert
+     * Sends the specified results to the specified Jabber server
      *
-     * Sends the specified results to the specified SMTP server
      * Returns true on success, PEAR_Error object on failure
      *
-     * @access private
-     * @param string server
-     * @param string recipient
-     * @param string login
-     * @param string password
-     * @param string message
+     * @param string $server Jabber server
+     * @param string $recipient Jabber recipient
+     * @param string $login Jabber sender login
+     * @param string $password Jabber sender password
+     * @param string $message message to send
      * @return mixed
+     * @access private
      */
     function sendAlert($server, $recipient, $login, $password, $message)
     {
@@ -198,9 +200,9 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
                 $this->_sockErrMsg = $sockErrMsg;
                 return new Pear_Error("Socket error $sockErr: $sockErrMsg");
             }
-            $response .= fread($fp,$this->_maxResponseLength);
+            $response .= fread($fp, $this->_maxResponseLength);
             if ($response) {
-                preg_match("/id='(\w+)'.*<starttls xmlns='(\S+)'/",$response,$response_array);
+                preg_match("/id='(\w+)'.*<starttls xmlns='(\S+)'/", $response, $response_array);
                 $id = $response_array[1];
                 $xmlns = $response_array[2];
                 if (!$id) {
@@ -215,15 +217,15 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
                 $auth = sprintf($auth_format, $id, $login, $password, $resource, md5($resource));
                 fwrite($fp, $auth);
                 sleep(1); //give it some time to digest the authorization
-                $auth_response = fread($fp,$this->_maxResponseLength);
+                $auth_response = fread($fp, $this->_maxResponseLength);
                 $response .= $auth_response;
                 if (strstr($xmlns, 'tls') && version_compare(phpversion(),'5.1.0','ge')) {
                     stream_socket_enable_crypto($fp, false, STREAM_CRYPTO_METHOD_TLS_CLIENT);
                 }
-                if (preg_match('/<iq.*type=\'result\'/',$auth_response)) {
+                if (preg_match('/<iq.*type=\'result\'/', $auth_response)) {
                     $message = sprintf($message_format, $id, $recipient, $message);
                     fwrite($fp, $message);
-                    $message_response = fread($fp,$this->_maxResponseLength);
+                    $message_response = fread($fp, $this->_maxResponseLength);
                     if ($message_response) {
                         //panic, this is probably an error
                         fwrite($fp, '</stream:stream>');
@@ -235,7 +237,7 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
                 return new Pear_Error('No response from '.$server);
             }
             fwrite($fp, '</stream:stream>');
-            $response .= fread($fp,$this->_maxResponseLength);
+            $response .= fread($fp, $this->_maxResponseLength);
             fclose($fp);
         }
     }
