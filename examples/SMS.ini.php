@@ -44,7 +44,8 @@ alert_line = "%h: %s: %m, confirm you got it please"
 sms_line = "%h:%s->%c"
 notify_change = 1
 notify_ok = 1
-from_email = contact@toggg.com
+sms_from = example
+sms_debug = false
 
 ; EDIT ABOVE THIS LINE
 ; */ ?>

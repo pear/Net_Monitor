@@ -9,9 +9,9 @@ bar.example.com = HTTP, FTP, DNS
 
 ; Alerts
 ; Common SMTP server default localhost, port 25, no user, no auth
+; (the SMTP_default option array)
 [SMTP]
 host = smtp.example.com
-from = noreply@example.com
 port = 25
 auth = true
 username = user2
@@ -25,7 +25,7 @@ auth = true
 username = user2'
 password = supersecret
 
-; Common SMS server
+; Common SMS server (the SMS_default option array)
 [SMS]
 SMS_provider = clickatell_http
 username = SMS_Subscriber
@@ -50,6 +50,10 @@ subject_line = "Net_Monitor Alert"
 alert_line = "%h: %s: %m"
 notify_change = 1
 notify_ok = 1
+from_email = noreply@example.com
+smtp_debug = false
+sms_from = '0123456789'
+sms_debug = false
 
 ; EDIT ABOVE THIS LINE
 ; */ ?>

@@ -33,12 +33,18 @@ require_once 'Net/Monitor/Alert.php';
  */
 require_once 'Net/SMS.php';
 /** 
- * class Net_Monitor_Alert_SMS
+ * Net_Monitor_Alert_SMS
+ *
+ * It uses the global Net_Monitor options (default):
+ * + sms_debug - send debugging output to STDOUT for the SMS alert (false)
+ * + sms_from - who is the sender for the SMS alert, ('Net_Monitor')
+ * + SMS_default - array of options for Net_SMS used for normal adressees (array())
  *
  * @category Net
  * @package Net_Monitor
  * @access public
  * @see Net_Monitor_Alert
+ * @see Net_SMS
  */
 class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
 {
@@ -70,20 +76,18 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
      * function alert
      *
      * Sends the alerts thru the specified SMS servers and accounts
-     * <li> $server is an array of user=>parameter
+     * + $server is an array of user=>parameter
      *      where parameter is either an array or string.
      *      A string should be a phone number (common user)
+     *      in this case global option SMS_default array will be used to configure Net_SMS
      *      An array describes the SMS server as required by Net/SMS.php
      *      and must contains an extra 'phone_number' key (prioritary user)
      *      SMS server description (extra or common option['SMS_default']) contains:
-     *      <ul>
-     *      <li> SMS_provider - The server to connect. Mandatory.
-     *      <li> username - The username to use for SMS authentication. Mandatory.
-     *      <li> password - The password to use for SMS authentication.
-     *      <li> ... more, depending upon provider
-     *      </ul>
-     * <li> $results is the array of results to send
-     * </ul>
+     *      + SMS_provider - The server to connect. Mandatory.
+     *      + username - The username to use for SMS authentication. Mandatory.
+     *      + password - The password to use for SMS authentication.
+     *      + ... more, depending upon provider
+     * + $results is the array of results to send
      * Returns true on success, PEAR_Error object on failure
      *
      * @access private
@@ -201,9 +205,6 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
                     $SMS['text'] = $SMS_message;
                 	//send message and return result
                 	$e = $sender->send($SMS);
-                    if (PEAR::isError($e))   {
-                        return $e;
-                    }
                 }
                 
             }

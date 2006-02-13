@@ -33,14 +33,19 @@ require_once 'Net/Monitor/Alert.php';
  */
 require_once 'Mail.php';
 /** 
- * class Net_Monitor_Alert_SMTP
+ * Net_Monitor_Alert_SMTP
  *
  * A class for sending alerts via SMTP (email)
+ * It uses the global Net_Monitor options (default):
+ * + smtp_debug - send debugging output to STDOUT for the SMTP alert (false)
+ * + from_email - who is the sender for the SMTP alert ('pear.Net_Monitor')
+ * + SMTP_default - array of options for Mail_SMTP used for normal adressees (array())
  *
  * @category Net
  * @package Net_Monitor
  * @access public
  * @see Net_Monitor_Alert
+ * @see Mail
  */
 class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
 {
@@ -73,21 +78,20 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
      *
      * Sends the alerts to the specified SMTP servers
      * First each dedicaded prioritary user (with own smtp parameters as array)
-     * <li> $server is an array of user=>parameter
+     * + $server is an array of user=>parameter
      *      where parameter is either an array or string.
      *      A string should be a fully qualified email address (common user)
+     *      in this case global option SMTP_default array will be used to configure SMTP
      *      An array describes the SMTP server as required my Mail/smtp.php
      *      and must contain an extra 'email' key (prioritary user)
-     *      the SMTP server description contains optionally:
-     *      <ul>
-     *      <li> host - The server to connect. Default is localhost
-     *      <li> port - The port to connect. Default is 25
-     *      <li> auth - Whether or not to use SMTP authentication. Default is FALSE
-     *      <li> username - The username to use for SMTP authentication.
-     *      <li> password - The password to use for SMTP authentication.
-     *      </ul>
-     * <li> $results is the array of results to send
-     * </ul>
+     *      the SMTP server description contains optionally (refer to Mail):
+     *      + host - The server to connect. Default is localhost
+     *      + port - The port to connect. Default is 25
+     *      + auth - Whether or not to use SMTP authentication. Default is FALSE
+     *      + username - The username to use for SMTP authentication.
+     *      + password - The password to use for SMTP authentication.
+     * + $results is the array of results to send
+     * 
      * Returns true on success, PEAR_Error object on failure
      *
      * @access private
@@ -119,17 +123,19 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
 
         //construct header's subject and from
         $headers = array(); 
-        if ($options['subject_line']) {
+        if (!empty($options['subject_line'])) {
             $headers['Subject'] = $options['subject_line'];
         } else {
-            PEAR::raiseError('Using default subject',
-                 null, PEAR_ERROR_EXCEPTION, E_USER_WARNING);
+            PEAR::raiseError("Using default subject\n",
+                 null, PEAR_ERROR_PRINT, E_USER_WARNING);
             $headers['Subject'] = 'Net_Monitor Alert';
         }
-        if (isset($options['from_email'])) {
+        if (!empty($options['from_email'])) {
             $headers['From'] = $options['from_email'];
         } else {
-            $headers['From'] = '';
+            PEAR::raiseError("Using default email 'from': pear.Net_Monitor\n",
+                 null, PEAR_ERROR_PRINT, E_USER_WARNING);
+            $headers['From'] = 'pear.Net_Monitor';
         }
         
         //parse $server to proceed prioritary ones and cumulate the others
@@ -148,27 +154,27 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
             }
             $params = array();
             $email = $where['email'];
-            if (is_string($where['host'])) {
+            if (isset($where['host'])) {
                 $params['host'] = $where['host'];
             }
-            if (is_int($where['port'])) {
+            if (isset($where['port'])) {
                 $params['port'] = $where['port'];
             }
-            if ($where['auth']) {
+            if (isset($where['auth'])) {
                 $params['auth'] = $where['auth'];
-                if (is_string($where['username'])) {
+                if (isset($where['username'])) {
                     $params['username'] = $where['username'];
                 }
-                if (is_string($where['password'])) {
+                if (isset($where['password'])) {
                     $params['password'] = $where['password'];
                 }
             }
             if (sizeof($params) > 0) {
-            	//send message and return result error if any
+                if (isset($where['smtp_debug'])) {
+                    $params['debug'] = $where['smtp_debug'];
+                }
+            	//send message
                 $e = $this->sendAlert($email, $params, $headers, $email_message);
-                if (PEAR::isError($e)) {
-                    return $e;
-                }            
             } else {
                 // it was only 'email' given => as normal user
                 $common[] = $email;
@@ -182,6 +188,9 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
     	$params = array();
         if (isset($options['SMTP_default'])) {
             $params = $options['SMTP_default'];
+        }
+        if (isset($options['smtp_debug'])) {
+            $params['debug'] = $options['smtp_debug'];
         }
         return $this->sendAlert($common, $params, $headers, $email_message);
     }

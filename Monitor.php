@@ -39,14 +39,14 @@ require_once 'PEAR.php';
 class Net_Monitor 
 {
     /**
-     * Array of services to check
+     * Array of services to check 'url' => array('services')
      *
      * @access private
      * @var array $_services
      */
     var $_services = array();
     /**
-     * Array of alerts to be sent organized by protocols
+     * Array of alerts to be sent organized by alerter protocols
      *
      * @access private
      * @var array $_alerts
@@ -54,22 +54,6 @@ class Net_Monitor
     var $_alerts = array();
     /**
      * Array of options to be used in the current monitoring session
-     *
-     * Options are:
-     * <ul>
-     * <li> state_directory - the directory where the state file gets saved
-     * <li> state_file - the name of the state file
-     * <li> subject_line - the subject line of the alert message
-     * <li> alert_line - the format string for the alert where:
-     *     <ul>
-     *     <li>%h = host
-     *     <li>%s = service
-     *     <li>%m = message
-     *     <li>%c = code
-     *     </ul>
-     * <li> notify_change - send alerts only on state change
-     * <li> notify_ok - send an alert when a service returns to a code 200 state
-     * <li> smtp_debug - send debugging output to STDOUT for the SMTP alert
      *
      * @access private
      * @var array $_options
@@ -115,8 +99,46 @@ class Net_Monitor
      * function Net_Monitor
      *
      * @access public
-     * @param array $services
-     * @param array $alerts
+     *
+     * @param array $services services to check 'url' => array('services')
+     * example: array('example.com' => array('SMTP', 'HTTP', 'HTTPS'),
+     *                'example.net' => array('DNS', 'FTP'))
+     *
+     * @param array $alerts alerts to be sent organized by alerter protocols
+     * as array('SMTP' => array(SMTP_adressees), 'SMS' => array(SMS_adressees))
+     * If this array is empty, alerts will be only printed and nothing sent
+     *
+     * SMTP_adressees is a simple string email, then $options['SMTP_default']
+     * will be used to configure the SMTP sender, or can itself be an array of
+     * options for a prioritary adressee (useful to monitor SMTP itself)
+     * in this case, the adressee is the 'email' => 'email@adress.com' element.
+     * see Mail for these options
+     *
+     * SMS_adressees is a simple string phone number, then $options['SMS_default']
+     * will be used to configure the SMS sender, or can itself be an array of
+     * options for a prioritary adressee (useful to specify alternate provider)
+     * in this case, the adressee is the 'phone_number' => '0123456789' element.
+     * see Net_SMS for these options
+     *
+     * @param array $options options to be used in the current monitoring session
+     * Options (default) are:
+     * + state_directory - the directory where the state file gets saved ('/tmp/')
+     * + state_file - the name of the state file ('Net_Monitor_State')
+     * + subject_line - the subject line of the alert message ('Net_Monitor Alert')
+     * + alert_line - the format string for the alert ('%h: %s: %m') where:
+     *     %h = host
+     *     %s = service
+     *     %m = message
+     *     %c = code
+     * + notify_change - send alerts only on state change (1)
+     * + notify_ok - send an alert when a service returns to a code 200 state (1)
+     * + smtp_debug - send debugging output to STDOUT for the SMTP alert (false)
+     * + from_email - who is the sender for the SMTP alert ('pear.Net_Monitor')
+     * + SMTP_default - array of options for Mail_SMTP used for normal adressees (array())
+     * + sms_debug - send debugging output to STDOUT for the SMS alert (false)
+     * + sms_from - who is the sender for the SMS alert, ('Net_Monitor')
+     * + SMS_default - array of options for Net_SMS used for normal adressees (array())
+     *
      * @return void
      */
     function Net_Monitor($services=array(),$alerts=array(),$options=array()) 
@@ -131,6 +153,8 @@ class Net_Monitor
         if (is_array($alerts) && sizeof($alerts) > 0) {
             $this->setAlerts($alerts);
         }
+        // don't die on errors and no messages (failing checks produce normal warnings)
+        PEAR::setErrorHandling(PEAR_ERROR_RETURN);
     }
     /** 
      * function setOptions
@@ -369,7 +393,12 @@ class Net_Monitor
 
     {
         $alerter =& $this->_alerters[$method];
-        return $alerter->alert($server,$this->_results_diff,$this->_options);
+        // don't die on error but send a message
+        PEAR::setErrorHandling(PEAR_ERROR_PRINT);
+        $ret = $alerter->alert($server,$this->_results_diff,$this->_options);
+        // don't die on errors and no messages (failing checks produce normal warnings)
+        PEAR::setErrorHandling(PEAR_ERROR_RETURN);
+        return $ret;
     }
     /** 
      * function saveState
