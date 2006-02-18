@@ -1,4 +1,4 @@
-<?PHP
+<?php
 /**
  *
  * This file gives an example of configuring Net_Monitor using an INI file
@@ -81,4 +81,3 @@ print_r($alerts);
 print_r($options);
 $monitor = new Net_Monitor($services, $alerts, $options);
 $monitor->checkAll();
-?>

@@ -14,4 +14,3 @@ $services = array('example.com' => array('DNS'));
 $monitor->setAlerts($alerts);
 $monitor->setServices($services);
 $monitor->checkAll();
-?>

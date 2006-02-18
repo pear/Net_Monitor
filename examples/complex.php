@@ -31,4 +31,3 @@ $monitor = new Net_Monitor($services,$alerts,$options);
 $monitor->resetState();
 $monitor->checkAll();
 $monitor->resetState();
-?>

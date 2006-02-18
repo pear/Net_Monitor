@@ -13,4 +13,3 @@ $services = array('foo.example.com' => array('SMTP','DNS'),
 $monitor->setAlerts($alerts);
 $monitor->setServices($services);
 $monitor->checkAll();
-?>

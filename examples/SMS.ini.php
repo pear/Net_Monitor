@@ -1,4 +1,4 @@
-;<?PHP die(); /** @package Net_Monitor
+;<?php die(); /** @package Net_Monitor
 ; EDIT BELOW THIS LINE
 
 ; Services
@@ -48,4 +48,4 @@ sms_from = example
 sms_debug = false
 
 ; EDIT ABOVE THIS LINE
-; */ ?>
+; */

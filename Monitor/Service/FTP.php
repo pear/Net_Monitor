@@ -18,7 +18,7 @@
  * @package    Net_Monitor
  * @author     Robert Peake <cyberscribe@php.net>
  * @author     Bertrand Gugger <bertrand@toggg.com>
- * @copyright  2004-2005 Robert Peake
+ * @copyright  2004-2006 Robert Peake
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
  * @version    CVS: $Id$
  * @link       http://pear.php.net/package/PackageName
@@ -98,4 +98,3 @@ class Net_Monitor_Service_FTP extends Net_Monitor_Service
     	}
     }
 }
-?>

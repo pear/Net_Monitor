@@ -16,7 +16,7 @@
  * 
  * @package Net_Monitor
  * @author Robert Peake <robert@peakepro.com>
- * @copyright 2005
+ * @copyright 2005-2006
  * @license http://www.php.net/license/3_0.txt
  * @version 0.0.1
  */
@@ -199,4 +199,3 @@ class Net_Monitor_Alert_Growl extends Net_Monitor_Alert
         }
     }
 } // end class Net_Monitor_Alert_Growl
-?>
