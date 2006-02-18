@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<!-- $Id: package.xml,v 1.7 2006-02-18 02:43:46 toggg Exp $ -->
 <package version="1.0">
   <name>Net_Monitor</name>
   <summary>Remote Service Monitor</summary>
@@ -18,12 +19,23 @@
       <role>developer</role>
     </maintainer>
   </maintainers>
-  <release>
-    <version>0.2.3</version>
-    <date>2005-04-12</date>
-    <license>PHP License</license>
-    <state>beta</state>
-    <notes>Fixed useless dependencies. Added examples and .phpt unit tests</notes>
+    <release>
+        <version>0.2.4</version>
+        <date>2006-02-30</date>
+        <license>PHP License</license>
+        <state>beta</state>
+        <notes>
+Actually use the smtp_debug option (passed as debug option to Net_SMTP)
+Withdraw warnings on not existing indexes (isset() or !empty())
+Set a default "from" in Mail and send a warning in this case
+Use PEAR_ERROR_PRINT instead of unusable PEAR_ERROR_EXCEPTION
+Actually print PEAR error messages raised by alerts
+Completed doc and placed it right for DocBook
+Corrected/completed examples
+Put CVS revision in here
+Bump to 2006
+Cut out "?&gt; php tails
+        </notes>
     <deps>
       <dep type="pkg" rel="ge" version="1.0.0" optional="no">PEAR</dep>
       <dep type="pkg" rel="ge" version="1.0.0" optional="yes">Mail</dep>
@@ -75,6 +87,15 @@
     </filelist>
   </release>
   <changelog>
+    <release>
+        <version>0.2.3</version>
+        <date>2005-04-12</date>
+        <license>PHP License</license>
+        <state>beta</state>
+        <notes>
+Fixed useless dependencies. Added examples and .phpt unit tests
+        </notes>
+    </release>
     <release>
         <version>0.2.2</version>
         <date>2005-03-30</date>
