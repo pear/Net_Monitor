@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<!-- $Id: package.xml,v 1.8 2006-02-18 03:50:02 toggg Exp $ -->
+<!-- $Id: package.xml,v 1.9 2006-02-18 03:57:31 toggg Exp $ -->
 <package version="1.0">
   <name>Net_Monitor</name>
   <summary>Remote Service Monitor</summary>
@@ -21,7 +21,7 @@
   </maintainers>
     <release>
         <version>0.2.4</version>
-        <date>2006-02-30</date>
+        <date>2006-02-18</date>
         <license>PHP License</license>
         <state>beta</state>
         <notes>
