@@ -21,7 +21,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <active>yes</active>
  </developer>
  <date>2006-02-18</date>
- <time>04:47:12</time>
+ <time>04:53:50</time>
  <version>
   <release>0.2.4</release>
   <api>0.2.4</api>
@@ -40,7 +40,7 @@ Completed doc and placed it right for DocBook
 Corrected/completed examples
 Put CVS revision in here
 Bump to 2006
-Cut out &quot;?&gt; php tails
+Cut out ?&gt; php tails
         
  </notes>
  <contents>

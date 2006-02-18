@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<!-- $Id: package.xml,v 1.7 2006-02-18 02:43:46 toggg Exp $ -->
+<!-- $Id: package.xml,v 1.8 2006-02-18 03:50:02 toggg Exp $ -->
 <package version="1.0">
   <name>Net_Monitor</name>
   <summary>Remote Service Monitor</summary>
@@ -34,7 +34,7 @@ Completed doc and placed it right for DocBook
 Corrected/completed examples
 Put CVS revision in here
 Bump to 2006
-Cut out "?&gt; php tails
+Cut out ?&gt; php tails
         </notes>
     <deps>
       <dep type="pkg" rel="ge" version="1.0.0" optional="no">PEAR</dep>
