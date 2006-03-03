@@ -32,7 +32,7 @@ require_once 'Net/Monitor/Alert.php';
  * requires and uses the Mail class to send SMTP alerts
  * FATAL if Mail is not installed
  */
-include_once 'Mail.php';
+require_once 'Mail.php';
 /** 
  * Net_Monitor_Alert_SMTP
  *

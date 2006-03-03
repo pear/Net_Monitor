@@ -25,10 +25,10 @@
  */
 require_once 'Net/Monitor/Alert.php';
 /**
- * includes and uses the Net_Growl class to send Growl alerts
+ * requires and uses the Net_Growl class to send Growl alerts
  * FATAL if Net_Growl is not installed
  */
-include_once 'Net/Growl.php';
+require_once 'Net/Growl.php';
 /** 
  * class Net_Monitor_Alert_Growl
  *
