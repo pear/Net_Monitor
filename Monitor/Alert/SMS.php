@@ -29,9 +29,10 @@
  */
 require_once 'Net/Monitor/Alert.php';
 /**
- * requires and uses the Net_SMS class for SMS alerts
+ * includes and uses the Net_SMS class for SMS alerts
+ * FATAL if Net_SMS is not installed
  */
-require_once 'Net/SMS.php';
+include_once 'Net/SMS.php';
 /** 
  * Net_Monitor_Alert_SMS
  *
