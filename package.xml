@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<!-- $Id: package.xml,v 1.10 2006-02-24 06:17:45 toggg Exp $ -->
+<!-- $Id: package.xml,v 1.11 2006-04-23 10:31:54 toggg Exp $ -->
 <package version="1.0">
   <name>Net_Monitor</name>
   <summary>Remote Service Monitor</summary>
@@ -10,12 +10,6 @@
       <user>cyberscribe</user>
       <name>Robert Peake</name>
       <email>cyberscribe@php.net</email>
-      <role>lead</role>
-    </maintainer>
-    <maintainer>
-      <user>toggg</user>
-      <name>Bertrand Gugger</name>
-      <email>bertrand@toggg.com</email>
       <role>lead</role>
     </maintainer>
   </maintainers>
