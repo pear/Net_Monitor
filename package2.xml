@@ -14,6 +14,12 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <email>cyberscribe@php.net</email>
   <active>yes</active>
  </lead>
+ <lead>
+  <name>Bertrand Gugger</name>
+  <user>toggg</user>
+  <email>bertrand@toggg.com</email>
+  <active>yes</active>
+ </lead>
  <date>2006-02-18</date>
  <time>05:01:14</time>
  <version>
