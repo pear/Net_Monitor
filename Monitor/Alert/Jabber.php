@@ -17,7 +17,7 @@
  * 
  * @package Net_Monitor
  * @author Robert Peake <robert@peakepro.com>
- * @copyright 2005-2006
+ * @copyright 2005-2007
  * @license http://www.php.net/license/3_0.txt
  * @version 0.1.1
  */
