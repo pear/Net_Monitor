@@ -14,15 +14,15 @@
  * the PHP License and are unable to obtain it through the web, please
  * send a note to license@php.net so we can mail you a copy immediately.
  *
- * @category   Net
- * @package    Net_Monitor
- * @author     Robert Peake <cyberscribe@php.net>
- * @author     Bertrand Gugger <bertrand@toggg.com>
- * @copyright  2004-2007 Robert Peake
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/PackageName
- * @since      File available since Release 0.0.6
+ * @category  Net
+ * @package   Net_Monitor
+ * @author    Robert Peake <cyberscribe@php.net>
+ * @author    Bertrand Gugger <bertrand@toggg.com>
+ * @copyright 2004-2007 Robert Peake
+ * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/Net_Monitor
+ * @since     File available since Release 0.0.6
  */
 /**
  * require and extend the Net_Monitor_Service class

@@ -14,11 +14,13 @@
  * the PHP License and are unable to obtain it through the web, please
  * send a note to license@php.net so we can mail you a copy immediately.
  * 
- * @package Net_Monitor
- * @author Robert Peake <robert@peakepro.com>
- * @copyright 2005-2007
- * @license http://www.php.net/license/3_0.txt
- * @version 0.0.1
+ * @category  Net
+ * @package   Net_Monitor
+ * @author    Robert Peake <cyberscribe@php.net>
+ * @copyright 2005-2007 Robert Peake
+ * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/Net_Monitor
  */
 /**
  * requires and extends the Net_Monitor_Alert class

@@ -2,8 +2,8 @@
 /**
  * Network service monitoring package
  *
- * A unified interface for checking the availability services on external 
- * servers and sending meaningful alerts through a variety of media if a 
+ * A unified interface for checking the availability services on external
+ * servers and sending meaningful alerts through a variety of media if a
  * service becomes unavailable.
  *
  * PHP versions 4 and 5
@@ -14,15 +14,15 @@
  * the PHP License and are unable to obtain it through the web, please
  * send a note to license@php.net so we can mail you a copy immediately.
  *
- * @category   Net
- * @package    Net_Monitor
- * @author     Robert Peake <cyberscribe@php.net>
- * @author     Bertrand Gugger <bertrand@toggg.com>
- * @copyright  2004-2007 Robert Peake
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/PackageName
- * @since      File available since Release 0.0.6
+ * @category  Net
+ * @package   Net_Monitor
+ * @author    Robert Peake <cyberscribe@php.net>
+ * @author    Bertrand Gugger <bertrand@toggg.com>
+ * @copyright 2004-2007 Robert Peake
+ * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/Net_Monitor
+ * @since     File available since Release 0.0.6
  */
 /**
  * class Net_Monitor_Alert
@@ -50,7 +50,7 @@ class Net_Monitor_Alert
      * @access private
      */
     var $_alert = null;
-    /** 
+    /**
      * function alert
      *
      * Sends the specified results to the specified server
@@ -66,8 +66,7 @@ class Net_Monitor_Alert
      * @param array results
      * @return mixed
      */
-    function alert($server,$results,$options=array()) 
-
+    function alert($server, $results, $options=array())
     {
       print "ALERT: $server ".$this->_service." not yet implemented\n";
       print_r($results);

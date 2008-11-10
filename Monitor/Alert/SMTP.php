@@ -14,15 +14,15 @@
  * the PHP License and are unable to obtain it through the web, please
  * send a note to license@php.net so we can mail you a copy immediately.
  *
- * @category   Net
- * @package    Net_Monitor
- * @author     Robert Peake <cyberscribe@php.net>
- * @author     Bertrand Gugger <bertrand@toggg.com>
- * @copyright  2004-2007 Robert Peake
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/PackageName
- * @since      File available since Release 0.0.6
+ * @category  Net
+ * @package   Net_Monitor
+ * @author    Robert Peake <cyberscribe@php.net>
+ * @author    Bertrand Gugger <bertrand@toggg.com>
+ * @copyright 2004-2007 Robert Peake
+ * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/Net_Monitor
+ * @since     File available since Release 0.0.6
  */
 /**
  * requires and extends the Net_Monitor_Alert class
@@ -100,7 +100,7 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
      * @param array results
      * @return mixed
      */
-    function alert($server,$result_array,$options=array()) 
+    function alert($server, $result_array, $options=array()) 
 
     {
         //construct $email_message from $result_array
@@ -114,7 +114,7 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
         	foreach ($services as $service=>$result) {
                 $email_message .= str_replace(
                     array('%h', '%s',    '%c',      '%m'),
-                    array($host,$service,$result[0],$result[1]),
+                    array($host, $service, $result[0], $result[1]),
                     $model_line)."\r\n";
             }
         }
@@ -211,7 +211,7 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
     function sendAlert($email, $params, $headers, $email_message) 
 
     {
-        $mailer =& Mail::factory('smtp',$params);
+        $mailer =& Mail::factory('smtp', $params);
         if (PEAR::isError($mailer))   {
             return $mailer;
         }

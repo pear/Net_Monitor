@@ -14,15 +14,15 @@
  * the PHP License and are unable to obtain it through the web, please
  * send a note to license@php.net so we can mail you a copy immediately.
  *
- * @category   Net
- * @package    Net_Monitor
- * @author     Robert Peake <cyberscribe@php.net>
- * @author     Bertrand Gugger <bertrand@toggg.com>
- * @copyright  2004-2007 Bertrand Gugger
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/PackageName
- * @since      File available since Release 0.0.6
+ * @category  Net
+ * @package   Net_Monitor
+ * @author    Robert Peake <cyberscribe@php.net>
+ * @author    Bertrand Gugger <bertrand@toggg.com>
+ * @copyright 2004-2007 Bertrand Gugger
+ * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/Net_Monitor
+ * @since     File available since Release 0.0.6
  */
 /**
  * requires and extends the Net_Monitor_Alert class
@@ -97,7 +97,7 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
      * @param array options
      * @return mixed true or PEAR_Error
      */
-    function alert($server,$result_array,$options=array()) 
+    function alert($server, $result_array, $options=array()) 
 
     {
         // max size of a message
@@ -118,7 +118,7 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
 	    	    // insert the values
                 $out = str_replace(
                     array('%h', '%s',    '%c',      '%m'),
-                    array($host,$service,$result[0],$result[1]),
+                    array($host, $service, $result[0], $result[1]),
                     $alert_line)."\r\n";
 	            // result line too long, store old, cut to max and store
 	            if (strlen($out) >= $max) {
