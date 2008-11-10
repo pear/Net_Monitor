@@ -30,8 +30,12 @@
  * A generic service monitoring class
  *
  * @category Net
- * @package Net_Monitor
- * @access public
+ * @package  Net_Monitor
+ * @author   Robert Peake <cyberscribe@php.net>
+ * @author   Bertrand Gugger <bertrand@toggg.com>
+ * @license  http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @link     http://pear.php.net/package/Net_Monitor
+ * @access   public
  */
 class Net_Monitor_Service
 {
@@ -42,6 +46,7 @@ class Net_Monitor_Service
      * @access private
      */
     var $_service = 'Generic';
+
     /**
      * The client object used for testing
      *
@@ -49,6 +54,7 @@ class Net_Monitor_Service
      * @access private
      */
     var $_client = null;
+
     /**
      * The last response code received
      *
@@ -56,18 +62,19 @@ class Net_Monitor_Service
      * @access private
      */
     var $_last_code = -1;
+
     /**
      * function check
      *
      * Checks the specified server ($server) for availability.
      * Returns false on success, or a notification array ( code, message) on failure.
      *
-     * @param mixed server
+     * @param mixed $server Specified server
+     *
      * @return mixed
      */
     function check($server)
-
     {
-        return array( -1, 'not yet implemented');
+        return array(-1, 'not yet implemented');
     }
 }

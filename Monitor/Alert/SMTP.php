@@ -28,11 +28,13 @@
  * requires and extends the Net_Monitor_Alert class
  */
 require_once 'Net/Monitor/Alert.php';
+
 /**
  * requires and uses the Mail class to send SMTP alerts
  * FATAL if Mail is not installed
  */
 require_once 'Mail.php';
+
 /** 
  * Net_Monitor_Alert_SMTP
  *
@@ -43,10 +45,14 @@ require_once 'Mail.php';
  * + SMTP_default - array of options for Mail_SMTP used for normal adressees (array())
  *
  * @category Net
- * @package Net_Monitor
- * @access public
- * @see Net_Monitor_Alert
- * @see Mail
+ * @package  Net_Monitor
+ * @author   Robert Peake <cyberscribe@php.net>
+ * @author   Bertrand Gugger <bertrand@toggg.com>
+ * @license  http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @link     http://pear.php.net/package/Net_Monitor
+ * @access   public
+ * @see      Net_Monitor_Alert
+ * @see      Mail
  */
 class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
 {
@@ -57,6 +63,7 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
      * @access private
      */
     var $_service = 'SMTP';
+
     /**
      * The alert object to be used
      *
@@ -64,16 +71,17 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
      * @access private
      */
     var $_alert = null;
+
     /** 
      * function Net_Monitor_Alert_SMTP
      *
      * @access public
      */
     function Net_Monitor_Alert_SMTP()
-
     {
         
     }
+
     /** 
      * function alert
      *
@@ -95,13 +103,14 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
      * 
      * Returns true on success, PEAR_Error object on failure
      *
+     * @param mixed $server       Server
+     * @param array $result_array Results
+     * @param mixed $options      Options
+     *
      * @access private
-     * @param mixed server
-     * @param array results
      * @return mixed
      */
     function alert($server, $result_array, $options=array()) 
-
     {
         //construct $email_message from $result_array
         $email_message = '';
@@ -110,14 +119,15 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
         } else {
             $model_line = '%h: %s: %m';
         }
+
         foreach ($result_array as $host=>$services) {
-        	foreach ($services as $service=>$result) {
-                $email_message .= str_replace(
-                    array('%h', '%s',    '%c',      '%m'),
-                    array($host, $service, $result[0], $result[1]),
-                    $model_line)."\r\n";
+            foreach ($services as $service=>$result) {
+                $email_message .= str_replace(array('%h', '%s',    '%c',      '%m'),
+                                              array($host, $service, $result[0], $result[1]),
+                                              $model_line)."\r\n";
             }
         }
+
         if (!$email_message) { // nothing to do
             return true;
         }
@@ -141,7 +151,8 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
         
         //parse $server to proceed prioritary ones and cumulate the others
         $common = array();
-        $email = '';
+        $email  = '';
+
         foreach ($server as $user=>$where) {
             // only email as string specified ? => to cumulate
             if (is_string($where)) {
@@ -149,18 +160,20 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
                 continue;
             }
             if (!is_array($where)) {
-                PEAR::raiseError(
-                    '$server is not a string or array -- unable to send alert');
+                PEAR::raiseError('$server is not a string or array -- unable to send alert');
                 return false;
             }
+
             $params = array();
-            $email = $where['email'];
+            $email  = $where['email'];
             if (isset($where['host'])) {
                 $params['host'] = $where['host'];
             }
+
             if (isset($where['port'])) {
                 $params['port'] = $where['port'];
             }
+
             if (isset($where['auth'])) {
                 $params['auth'] = $where['auth'];
                 if (isset($where['username'])) {
@@ -170,55 +183,62 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
                     $params['password'] = $where['password'];
                 }
             }
+
             if (sizeof($params) > 0) {
                 if (isset($where['smtp_debug'])) {
                     $params['debug'] = $where['smtp_debug'];
                 }
-            	//send message
+                //send message
                 $e = $this->sendAlert($email, $params, $headers, $email_message);
             } else {
                 // it was only 'email' given => as normal user
                 $common[] = $email;
             }
         }
-    	
-    	if (!$common) { // nothing left to do
-    	   return true;
-    	}
-    	//send message to normal users and return result
-    	$params = array();
+        
+        if (!$common) { // nothing left to do
+            return true;
+        }
+
+        //send message to normal users and return result
+        $params = array();
         if (isset($options['SMTP_default'])) {
             $params = $options['SMTP_default'];
         }
+
         if (isset($options['smtp_debug'])) {
             $params['debug'] = $options['smtp_debug'];
         }
+
         return $this->sendAlert($common, $params, $headers, $email_message);
     }
+
     /** 
      * function sendAlert
      *
      * Sends the specified results to the specified SMTP server
      * Returns true on success, PEAR_Error object on failure
      *
+     * @param mixed  $email         email(s) address(es)
+     * @param array  $params        smtp server parameters
+     * @param array  $headers       headers
+     * @param string $email_message message
+     *
      * @access private
-     * @param mixed email(s) address(es)
-     * @param array smtp server parameters
-     * @param array headers
-     * @param string message
      * @return mixed
      */
     function sendAlert($email, $params, $headers, $email_message) 
-
     {
         $mailer =& Mail::factory('smtp', $params);
-        if (PEAR::isError($mailer))   {
+        if (PEAR::isError($mailer)) {
             return $mailer;
         }
+
         $headers['To'] = $email;
+
         $smtp_client =& $this->_alert;
-    	
-    	//send message and return result
-    	return $mailer->send($email, $headers, $email_message);
+        
+        //send message and return result
+        return $mailer->send($email, $headers, $email_message);
     }
 }

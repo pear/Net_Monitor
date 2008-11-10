@@ -34,9 +34,13 @@ require_once 'Net/Growl.php';
 /** 
  * class Net_Monitor_Alert_Growl
  *
- * @package Net_Monitor
- * @see Net_Monitor_Alert
- * @access public
+ * @category Net
+ * @package  Net_Monitor
+ * @author   Robert Peake <cyberscribe@php.net>
+ * @author   Bertrand Gugger <bertrand@toggg.com>
+ * @license  http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @link     http://pear.php.net/package/Net_Monitor
+ * @access   public
  */
 class Net_Monitor_Alert_Growl extends Net_Monitor_Alert
 {
@@ -96,10 +100,10 @@ class Net_Monitor_Alert_Growl extends Net_Monitor_Alert
      * @access public
      */
     function Net_Monitor_Alert_Growl()
-
     {
         //nothing to initialize
     }
+
     /** 
      * Sends the alerts thru the specified Growl server with optional password
      *
@@ -114,9 +118,10 @@ class Net_Monitor_Alert_Growl extends Net_Monitor_Alert
      * </ul>
      * Returns true on success, PEAR_Error object on failure
      *
-     * @param array $server Growl server connection/authentication options
-     * @param array $results results to send
-     * @param array $options standard Net_Monitor options
+     * @param array $server       Growl server connection/authentication options
+     * @param array $result_array results to send
+     * @param array $options      standard Net_Monitor options
+     *
      * @return mixed true or PEAR_Error
      * @access private
      */
@@ -128,27 +133,30 @@ class Net_Monitor_Alert_Growl extends Net_Monitor_Alert
         } else {
             $model_line = '%h: %s: %m';
         }
+
         if (isset($options['subject_line'])) {
             $subject = $options['subject_line'];
         }
+
         if (isset($options['priority'])) {
-            $this->_options['priority'] =  $options['priority'];
+            $this->_options['priority'] = $options['priority'];
         }
+
         if (isset($options['sticky'])) {
-            $this->_options['sticky'] =  $options['sticky'];
+            $this->_options['sticky'] = $options['sticky'];
         }
-        foreach ($result_array as $host=>$services) {
-            foreach ($services as $service=>$result) {
-            $message .= str_replace(
-                array('%h', '%s',    '%c',      '%m'),
-                array($host, $service, $result[0], $result[1]),
-                $model_line)."\r\n";
+
+        foreach ($result_array as $host => $services) {
+            foreach ($services as $service => $result) {
+                $message .= str_replace(array('%h', '%s',    '%c',      '%m'),
+                                        array($host, $service, $result[0], $result[1]),
+                                        $model_line)."\r\n";
             }
         }
+
         foreach ($server as $messenger=>$where) {
             if (!is_array($where)) {
-                PEAR::raiseError(
-                    'server paramaters are not in an array -- unable to send alert');
+                PEAR::raiseError('server paramaters are not in an array -- unable to send alert');
                 return false;
             }
             if (is_string($where['server'])) {
@@ -164,15 +172,18 @@ class Net_Monitor_Alert_Growl extends Net_Monitor_Alert
         }
         return true;
     } // alert()
+
     /**
      * Sends the specified results to the specified Growl server
      *
      * Returns true on success, PEAR_Error object on failure
      *
-     * @param string $message message to send
-     * @param string $server Growl server
-     * @param string $password Growl server password
-     * @param string $subject optional subject line
+     * @param string $message   message to send
+     * @param string $messenger messager
+     * @param string $server    Growl server
+     * @param string $password  Growl server password
+     * @param string $subject   optional subject line
+     *
      * @return mixed
      * @access private
      */
@@ -180,25 +191,32 @@ class Net_Monitor_Alert_Growl extends Net_Monitor_Alert
     {
         if (!is_string($message) || strlen($message) == 0) {
             return new Pear_Error('Net_Monitor_Alert_Growl requires a message.');
-        } else {
-            //send Growl alert here
-            if (!$subject) $subject = 'Net_Monitor Alert';
-            if (empty($this->_alert) || !is_object($this->_alert[$messenger])) {
-                if (!is_string($server) || strlen($server) == 0) {
-                    $server = '127.0.0.1';
-                }
-                $server_array = array($server);
-                if ($this->_port) {
-                    $server_array[] = $this->_port;
-                }
-                if ($this->_protocol) {
-                    $server_array[] = $this->_protocol;
-                }
-                $application = 'PEAR::Net_Monitor for '.$messenger;
-                $this->_alert[$messenger] = new Net_Growl($application, array($messenger), $password, $server_array);
-            }
-            $growl =& $this->_alert[$messenger];
-            return $growl->notify($messenger, $subject, $message, $this->_options);
         }
+
+        //send Growl alert here
+        if (!$subject) {
+            $subject = 'Net_Monitor Alert';
+        }
+
+        if (empty($this->_alert) || !is_object($this->_alert[$messenger])) {
+            if (!is_string($server) || strlen($server) == 0) {
+                $server = '127.0.0.1';
+            }
+            $server_array = array($server);
+            if ($this->_port) {
+                $server_array[] = $this->_port;
+            }
+            if ($this->_protocol) {
+                $server_array[] = $this->_protocol;
+            }
+
+            $application = 'PEAR::Net_Monitor for '.$messenger;
+
+            $this->_alert[$messenger] = new Net_Growl($application, array($messenger), $password, $server_array);
+        }
+
+        $growl =& $this->_alert[$messenger];
+        return $growl->notify($messenger, $subject, $message, $this->_options);
+        
     }
 } // end class Net_Monitor_Alert_Growl

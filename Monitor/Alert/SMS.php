@@ -42,10 +42,14 @@ require_once 'Net/SMS.php';
  * + SMS_default - array of options for Net_SMS used for normal adressees (array())
  *
  * @category Net
- * @package Net_Monitor
- * @access public
- * @see Net_Monitor_Alert
- * @see Net_SMS
+ * @package  Net_Monitor
+ * @author   Robert Peake <cyberscribe@php.net>
+ * @author   Bertrand Gugger <bertrand@toggg.com>
+ * @license  http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @link     http://pear.php.net/package/Net_Monitor
+ * @access   public
+ * @see      Net_Monitor_Alert
+ * @see      Net_SMS
  */
 class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
 {
@@ -56,6 +60,7 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
      * @access private
      */
     var $_service = 'SMS';
+
     /**
      * The alert object to be used
      *
@@ -63,16 +68,17 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
      * @access private
      */
     var $_alert = null;
+
     /** 
      * function Net_Monitor_Alert_SMS
      *
      * @access public
      */
     function Net_Monitor_Alert_SMS()
-
     {
         $this->_alert = new Net_SMS();
     }
+
     /** 
      * function alert
      *
@@ -91,14 +97,14 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
      * + $results is the array of results to send
      * Returns true on success, PEAR_Error object on failure
      *
+     * @param mixed $server       Server
+     * @param array $result_array Results
+     * @param array $options      Options
+     *
      * @access private
-     * @param mixed server
-     * @param array results
-     * @param array options
      * @return mixed true or PEAR_Error
      */
     function alert($server, $result_array, $options=array()) 
-
     {
         // max size of a message
         $max = 160;
@@ -113,29 +119,28 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
         $SMS_array = array();
         // buid one message
         $SMS_message = '';
-    	foreach ($result_array as $host=>$services) {
-        	foreach ($services as $service=>$result) {
-	    	    // insert the values
-                $out = str_replace(
-                    array('%h', '%s',    '%c',      '%m'),
-                    array($host, $service, $result[0], $result[1]),
-                    $alert_line)."\r\n";
-	            // result line too long, store old, cut to max and store
-	            if (strlen($out) >= $max) {
-	                if ($SMS_message) {
-	                    $SMS_array[] = $SMS_message;
-	                    $SMS_message = '';
-	                }
-	                $SMS_array[] = substr($out, 0, $max);
-	            } else {
-	                // it will become too long, sore old first
-	                if ((strlen($SMS_message) + strlen($out)) > $max) {
-	                    $SMS_array[] = $SMS_message;
-	                    $SMS_message = $out;
-	                } else {
-	                    $SMS_message .= $out;
-	                }
-	            }
+        foreach ($result_array as $host=>$services) {
+            foreach ($services as $service=>$result) {
+                // insert the values
+                $out = str_replace(array('%h', '%s',    '%c',      '%m'),
+                                   array($host, $service, $result[0], $result[1]),
+                                   $alert_line)."\r\n";
+                // result line too long, store old, cut to max and store
+                if (strlen($out) >= $max) {
+                    if ($SMS_message) {
+                        $SMS_array[] = $SMS_message;
+                        $SMS_message = '';
+                    }
+                    $SMS_array[] = substr($out, 0, $max);
+                } else {
+                    // it will become too long, sore old first
+                    if ((strlen($SMS_message) + strlen($out)) > $max) {
+                        $SMS_array[] = $SMS_message;
+                        $SMS_message = $out;
+                    } else {
+                        $SMS_message .= $out;
+                    }
+                }
             }
         }
         // rest in buffer ?
@@ -154,19 +159,21 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
                 $where = array_merge($options['SMS_default'],
                                      array('phone_number' => $where));
             } elseif (!is_array($where)) {
-                PEAR::raiseError(
-                    'user param is not a string or array -- unable to send alert');
+                PEAR::raiseError('user param is not a string or array -- unable to send alert');
                 return false;
             }
+
             $SMS_provider = $where['SMS_provider'];
-            $username = $where['username'];
+            $username     = $where['username'];
+
             // first time for this provider
-            if (!array_key_exists ($SMS_provider, $toSend)) {
+            if (!array_key_exists($SMS_provider, $toSend)) {
                 $toSend[$SMS_provider] = array();
                 $accPar[$SMS_provider] = array();
             }
+
             // first time for this subscriber by this provider
-            if (!array_key_exists ($username, $toSend[$SMS_provider])) {
+            if (!array_key_exists($username, $toSend[$SMS_provider])) {
                 $toSend[$SMS_provider][$username] = array();
                 // to ensure future compatibility with Net_SMS take everything
                 $accPar[$SMS_provider][$username] = $where;
@@ -178,34 +185,39 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
             // store the SMS destination
             $toSend[$SMS_provider][$username][] = $where['phone_number'];
         }
-    	$SMS = array();
+
+        $SMS = array();
         if (isset($options['sms_from'])) {
             $SMS['from'] = $options['sms_from'];
         } else {
             $SMS['from'] = 'Net_Monitor';
         }
+
         // loop on providers
         foreach ($toSend as $SMS_provider => $sublist) {
             // loop on subscribers
             foreach ($sublist as $username => $toList) {
                 $SMS['to'] = $toList;
-		        if (isset($options['sms_debug']) and $options['sms_debug']) {
-					echo "{$username} by {$SMS_provider}\n";
-					print_r($SMS);
-					print_r($accPar[$SMS_provider][$username]);
-					continue;
-		        }
+                if (isset($options['sms_debug']) and $options['sms_debug']) {
+                    echo "{$username} by {$SMS_provider}\n";
+                    print_r($SMS);
+                    print_r($accPar[$SMS_provider][$username]);
+                    continue;
+                }
+
                 $sender =& Net_SMS::factory($SMS_provider,
                                     $accPar[$SMS_provider][$username]);
-                if (PEAR::isError($sender))   {
+
+                if (PEAR::isError($sender)) {
                     return $sender;
                 }
+
                 $i = 1;
                 foreach ($SMS_array as $SMS_message) {
-                    $SMS['id'] = $i;
+                    $SMS['id']   = $i;
                     $SMS['text'] = $SMS_message;
-                	//send message and return result
-                	$e = $sender->send($SMS);
+                    //send message and return result
+                    $e = $sender->send($SMS);
                 }
                 
             }

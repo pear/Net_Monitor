@@ -38,9 +38,13 @@ require_once 'HTTP/Request.php';
  * A class to check HTTP (web) services
  *
  * @category Net
- * @package Net_Monitor
- * @access public
- * @see Net_Monitor_Service
+ * @package  Net_Monitor
+ * @author   Robert Peake <cyberscribe@php.net>
+ * @author   Bertrand Gugger <bertrand@toggg.com>
+ * @license  http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @link     http://pear.php.net/package/Net_Monitor
+ * @access   public
+ * @see      Net_Monitor_Service
  */
 class Net_Monitor_Service_HTTP extends Net_Monitor_Service
 {
@@ -51,6 +55,7 @@ class Net_Monitor_Service_HTTP extends Net_Monitor_Service
      * @access private
      */
     var $_service = 'HTTP';
+
     /**
      * The client object used for testing
      *
@@ -58,6 +63,7 @@ class Net_Monitor_Service_HTTP extends Net_Monitor_Service
      * @access private
      */
     var $_client = null;
+
     /**
      * The last response code received
      *
@@ -65,38 +71,43 @@ class Net_Monitor_Service_HTTP extends Net_Monitor_Service
      * @access private
      */
     var $_last_code = -1;
+
     /**
      * @var string _prefix
      * @access private
      */
     var $_prefix = 'http://';
+
     /** 
      * function Net_Monitor_Service_HTTP
      *
      * @access public
      */
     function Net_Monitor_Service_HTTP()
-
     {
         $this->_client = new HTTP_Request();
     }
+
     /** 
      * function check
      * 
      * Checks the specified HTTP server ($host) for availability.
      * Returns false on success, or a notification array on failure.
      *
-     * @param mixed host
+     * @param mixed $host HTTP server
+     *
      * @return mixed
      */
     function check($host) 
-
     {
         $response = 0;
-        $full_host = $this->_prefix.$host;
-    	$this->_client = new HTTP_Request($full_host);  
-        $http_client = $this->_client;
+
+        $full_host     = $this->_prefix.$host;
+        $this->_client = new HTTP_Request($full_host);  
+        $http_client   = $this->_client;
+
         $e = $http_client->sendRequest();
+
         if (!PEAR::isError($e)) {
             $e = $http_client->getResponseBody();
             if (!PEAR::isError($e)) {
@@ -111,11 +122,11 @@ class Net_Monitor_Service_HTTP extends Net_Monitor_Service
         if (PEAR::isError($e)) {
             $msg = $e->getMessage();
             if (!$msg) {
-    		    $msg = 'host not found';
+                $msg = 'host not found';
             }
-    		$return = array($response, $msg);
+            $return = array($response, $msg);
         }
-    	$this->_last_code = $response;
+        $this->_last_code = $response;
         return $return;
     }
 }

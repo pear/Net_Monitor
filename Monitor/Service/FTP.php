@@ -38,9 +38,13 @@ require_once 'Net/FTP.php';
  * A class to check FTP services
  *
  * @category Net
- * @package Net_Monitor
- * @access public
- * @see Net_Monitor_Service
+ * @package  Net_Monitor
+ * @author   Robert Peake <cyberscribe@php.net>
+ * @author   Bertrand Gugger <bertrand@toggg.com>
+ * @license  http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @link     http://pear.php.net/package/Net_Monitor
+ * @access   public
+ * @see      Net_Monitor_Service
  */
 class Net_Monitor_Service_FTP extends Net_Monitor_Service
 {
@@ -51,6 +55,7 @@ class Net_Monitor_Service_FTP extends Net_Monitor_Service
      * @access private
      */
     var $_service = 'FTP';
+
     /**
      * The client object used for testing
      *
@@ -58,6 +63,7 @@ class Net_Monitor_Service_FTP extends Net_Monitor_Service
      * @access private
      */
     var $_client = null;
+
     /**
      * The last response code received
      *
@@ -65,36 +71,37 @@ class Net_Monitor_Service_FTP extends Net_Monitor_Service
      * @access private
      */
     var $_last_code = -1;
+
     /** 
      * function Net_Monitor_Service_FTP
      *
      * @access public
      */
     function Net_Monitor_Service_FTP()
-
     {
         $this->_client = new Net_FTP();
     }
+
     /** 
      * function check
      * 
      * Checks the specified FTP server ($host) for availability.
      * Returns false on success, or a notification array on failure.
      *
-     * @param mixed host
+     * @param mixed $host FTP server
+     *
      * @return mixed
      */
     function check($host) 
-
     {
         $c = $this->_client;
-    	$e = $c->connect($host);
-    	if (!PEAR::isError($e)) {
-    	    $this->_last_code = '200';
-    	    return false;
-    	} else {
-    	    $this->_last_code = 0;
-    	    return array(0, $e->getMessage()); 
-    	}
+        $e = $c->connect($host);
+        if (!PEAR::isError($e)) {
+            $this->_last_code = '200';
+            return false;
+        }
+
+        $this->_last_code = 0;
+        return array(0, $e->getMessage());  
     }
 }

@@ -24,15 +24,19 @@
  * @link      http://pear.php.net/package/Net_Monitor
  * @since     File available since Release 0.0.6
  */
+
 /**
  * class Net_Monitor_Alert
  *
  * This is the generic alert class
  *
  * @category Net
- * @package	Net_Monitor
- * @access public
- *
+ * @package  Net_Monitor
+ * @author   Robert Peake <cyberscribe@php.net>
+ * @author   Bertrand Gugger <bertrand@toggg.com>
+ * @license  http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @link     http://pear.php.net/package/Net_Monitor
+ * @access   public
  */
 class Net_Monitor_Alert
 {
@@ -43,6 +47,7 @@ class Net_Monitor_Alert
      * @access private
      */
     var $_service = 'Generic';
+
     /**
      * The alert object used for sending alerts
      *
@@ -50,6 +55,7 @@ class Net_Monitor_Alert
      * @access private
      */
     var $_alert = null;
+
     /**
      * function alert
      *
@@ -61,14 +67,16 @@ class Net_Monitor_Alert
      * </ul>
      * Does not return a value.
      *
+     * @param mixed $server  Server to alert
+     * @param array $results Results array
+     * @param array $options Options
+     *
      * @access private
-     * @param mixed server
-     * @param array results
      * @return mixed
      */
     function alert($server, $results, $options=array())
     {
-      print "ALERT: $server ".$this->_service." not yet implemented\n";
-      print_r($results);
+        print "ALERT: $server ".$this->_service." not yet implemented\n";
+        print_r($results);
     }
 }

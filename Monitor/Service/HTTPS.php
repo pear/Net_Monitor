@@ -34,9 +34,13 @@ require_once 'Net/Monitor/Service/HTTP.php';
  * A class for checking HTTPS (web over SSL) services
  *
  * @category Net
- * @package Net_Monitor
- * @access public
- * @see Net_Monitor_Service_HTTP
+ * @package  Net_Monitor
+ * @author   Robert Peake <cyberscribe@php.net>
+ * @author   Bertrand Gugger <bertrand@toggg.com>
+ * @license  http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @link     http://pear.php.net/package/Net_Monitor
+ * @access   public
+ * @see      Net_Monitor_Service_HTTP
  */
 class Net_Monitor_Service_HTTPS extends Net_Monitor_Service_HTTP
 {
@@ -47,6 +51,7 @@ class Net_Monitor_Service_HTTPS extends Net_Monitor_Service_HTTP
      * @access private
      */
     var $_service = 'HTTPS';
+
     /**
      * The prefix used to form a fully-qualified URL
      *
@@ -54,17 +59,17 @@ class Net_Monitor_Service_HTTPS extends Net_Monitor_Service_HTTP
      * @access public
      */
     var $_prefix = 'https://';
+
     /** 
      * function Net_Monitor_Service_HTTPS
      *
      * @access public
      */
     function Net_Monitor_Service_HTTPS()
-
     {
         if (!extension_loaded('openssl')) {
-    	    PEAR::raiseError('Net_Monitor_Service_HTTPS requires OpenSSL');
-    	}
+            PEAR::raiseError('Net_Monitor_Service_HTTPS requires OpenSSL');
+        }
         $this->Net_Monitor_Service_HTTP();
     }
 }

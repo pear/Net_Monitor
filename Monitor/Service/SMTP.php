@@ -38,9 +38,13 @@ require_once 'Net/SMTP.php';
  * A class for checking SMTP (email) services
  *
  * @category Net
- * @package Net_Monitor
- * @access public
- * @see Net_Monitor_Service
+ * @package  Net_Monitor
+ * @author   Robert Peake <cyberscribe@php.net>
+ * @author   Bertrand Gugger <bertrand@toggg.com>
+ * @license  http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @link     http://pear.php.net/package/Net_Monitor
+ * @access   public
+ * @see      Net_Monitor_Service
  */
 class Net_Monitor_Service_SMTP extends Net_Monitor_Service
 {
@@ -51,6 +55,7 @@ class Net_Monitor_Service_SMTP extends Net_Monitor_Service
      * @access private
      */
     var $_service = 'SMTP';
+
     /**
      * The client object used for testing
      *
@@ -58,6 +63,7 @@ class Net_Monitor_Service_SMTP extends Net_Monitor_Service
      * @access private
      */
     var $_client = null;
+
     /**
      * The last response code received
      *
@@ -65,41 +71,47 @@ class Net_Monitor_Service_SMTP extends Net_Monitor_Service
      * @access private
      */
     var $_last_code = -1;
+
     /** 
      * function Net_Monitor_Service_SMTP
      *
      * @access public
      */
     function Net_Monitor_Service_SMTP()
-
     {
         $this->_client = new Net_SMTP();
     }
+
     /** 
      * function check
      * 
      * Checks the specified SMTP server ($host) for availability.
      * Returns false on success, or a notification array on failure.
      *
-     * @param mixed host
+     * @param mixed $host SMTP server
+     *
      * @return mixed
      */
     function check($host) 
-
     {
         $response = 0;
+
         $this->_client = new Net_SMTP($host);
+
         $c = $this->_client;
         $e = $c->connect();
+
         if (PEAR::isError($e)) { 
             //return connection-specific error string
             $this->_last_code = $response;
             return array($response, $e->getMessage());
-        } else { 
-            //everything is OK
-            $c->disconnect();
-            $this->_last_code = 200; //set last code to 200
-            return false; //false signifies no problem
         }
+
+        //everything is OK
+        $c->disconnect();
+
+        $this->_last_code = 200; //set last code to 200
+
+        return false; //false signifies no problem       
     }
 }
