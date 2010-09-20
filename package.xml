@@ -44,7 +44,7 @@ Cut out ?&gt; php tails
         
  </notes>
  <contents>
-  <dir name="/">
+  <dir baseinstalldir="/" name="/">
    <dir name="doc">
     <file baseinstalldir="Net" name="README.txt" role="doc" />
    </dir> <!-- /doc -->
