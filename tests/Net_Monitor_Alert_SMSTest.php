@@ -8,7 +8,26 @@ class Net_Monitor_Alert_SMSTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testAlert() {
-        $this->fail("Not yet implemented");
+        $this->alert->mock = $this->getMock('Net_SMS_Mock_Driver');
+        $this->alert->mock->expects($this->once())
+                            ->method('send')
+                            ->with(array('from' => 'Net_Monitor', 
+                                         'to' => array('example.com'),
+                                         'id' => 1,
+                                         'text' => 'sad.server.com(HTTP)>Sad server message ' . "\r\n"));
+
+        $options = array('state_file' => 'Net_Monitor_TestSuite',
+                         'SMS_default' => array( 'SMS_provider' => 'clickatell_http',
+		                                        'username' => 'pique',
+		                                        'password' => 'robert',
+		                                        'api_id' => 'x.y.z' ));
+
+        $result_array = array('sad.server.com' => 
+                                array('HTTP' => 
+                                    array("Sad server message", 0)));
+
+
+        $this->alert->alert(array('example.com'), $result_array, $options);
     }
 
     public function testShouldNotBufferShortSMS() {
@@ -87,4 +106,7 @@ class Net_Monitor_Alert_SMSMock extends Net_Monitor_Alert_SMS {
     public function buildToSendList($items) {
         return parent::buildToSendList($items);
     }
+}
+class Net_SMS_Mock_Driver {
+    public function send() {}
 }

@@ -206,10 +206,6 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
         $accPar = array();
 
         foreach ($items as $where) {
-            if (empty($where['SMS_provider'])) {
-                continue;
-            }
-
             $SMS_provider = $where['SMS_provider'];
 
             // first time for this provider
@@ -220,16 +216,7 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
         }
 
         foreach ($items as $where) {
-            if (empty($where['SMS_provider'])) {
-                continue;
-            }
-
             $SMS_provider = $where['SMS_provider'];
-
-            if (empty($where['username'])) {
-                continue;
-            }
-
             $username     = $where['username'];
 
             // first time for this subscriber by this provider
@@ -246,18 +233,6 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
 
          // store the SMS destination
         foreach ($items as $where) {
-            if (empty($where['SMS_provider'])) {
-                continue;
-            }
-
-            if (empty($where['username'])) {
-                continue;
-            }
-
-            if (empty($where['phone_number'])) {
-                continue;
-
-            }
             $SMS_provider = $where['SMS_provider'];
             $username     = $where['username'];
 
