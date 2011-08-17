@@ -6,7 +6,7 @@
  * servers and sending meaningful alerts through a variety of media if a
  * service becomes unavailable.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
@@ -45,26 +45,26 @@ class Net_Monitor
     /**
      * Array of services to check 'url' => array('services')
      *
-     * @access private
+     * @access protected
      * @var array $_services
      */
-    var $_services = array();
+    protected $_services = array();
 
     /**
      * Array of alerts to be sent organized by alerter protocols
      *
-     * @access private
+     * @access protected
      * @var array $_alerts
      */
-    var $_alerts = array();
+    protected $_alerts = array();
 
     /**
      * Array of options to be used in the current monitoring session
      *
-     * @access private
+     * @access protected
      * @var array $_options
      */
-    var $_options = array('state_directory' => '/tmp/',
+    protected $_options = array('state_directory' => '/tmp/',
                           'state_file'      => 'Net_Monitor_State',
                           'subject_line'    => 'Net_Monitor Alert',
                           'alert_line'      => '%h: %s: %m',
@@ -74,26 +74,26 @@ class Net_Monitor
     /**
      * Array of client objects to be used when testing a service
      *
-     * @access private
+     * @access protected
      * @var array $_clients
      */
-    var $_clients = array();
+    protected $_clients = array();
 
     /**
      * Array of alerter objects to be used when sending alerts
      *
-     * @access private
+     * @access protected
      * @var array $_alerters
      */
-    var $_alerters = array();
+    protected $_alerters = array();
 
     /**
      * Array of results from most recent service check
      *
-     * @access private
+     * @access protected
      * @var array $_results
      */
-    var $_results = array();
+    protected $_results = array();
 
     /**
      * Array of differences in results between previous session and this session
@@ -148,7 +148,7 @@ class Net_Monitor
      * @access public
      * @return void
      */
-    function Net_Monitor($services=array(), $alerts=array(), $options=array())
+    public function __construct($services = array(), $alerts = array(), $options = array())
     {
         if (is_array($options) && sizeof($options) > 0) {
             $this->setOptions($options);
@@ -177,7 +177,7 @@ class Net_Monitor
      * @access public
      * @return void
      */
-    function setOptions($options)
+    public function setOptions($options)
     {
         foreach ($options as $key => $value) {
             $this->_options[$key] = $value;
@@ -200,7 +200,7 @@ class Net_Monitor
      * @access public
      * @return void
      */
-    function setServices($services)
+    public function setServices($services)
     {
         $this->_services = $services;
     }
@@ -220,7 +220,7 @@ class Net_Monitor
      *
      * @return void
      */
-    function setAlerts($alerts)
+    public function setAlerts($alerts)
     {
         foreach ($alerts as $user => $parAlert) {
             foreach ($parAlert as $proto => $param) {
@@ -240,7 +240,7 @@ class Net_Monitor
      * @access public
      * @return void
      */
-    function checkAll()
+    public function checkAll()
     {
         //initialize the _results and _results_diff arrays
         $this->_results      = array();
@@ -312,9 +312,9 @@ class Net_Monitor
      * @access public
      * @return mixed
      */
-    function check($server, $service)
+    public function check($server, $service)
     {
-        $client =& $this->_clients[$service];
+        $client = $this->_clients[$service];
         return $client->check($server);
     }
 
@@ -327,7 +327,7 @@ class Net_Monitor
      * @access public
      * @return void
      */
-    function loadClients()
+    public function loadClients()
     {
         $services_array = array_values($this->_services);
         $types_array    = array_keys($this->_clients);
@@ -337,7 +337,7 @@ class Net_Monitor
                 if (!in_array($type, $types_array)) {
                     $types_array[] = $type;
 
-                    $this->_clients[$type] =& $this->getClient($type);
+                    $this->_clients[$type] = $this->getClient($type);
                 }
             }
         }
@@ -352,7 +352,7 @@ class Net_Monitor
      * @access public
      * @return void
      */
-    function loadAlerters()
+    public function loadAlerters()
     {
         $alerts_array = array_keys($this->_alerts);
         foreach ($alerts_array as $alert_type) {
@@ -371,10 +371,10 @@ class Net_Monitor
      *
      * @param string $type Class / Type of service to fetch
      *
-     * @access private
+     * @access public
      * @return object
      */
-    function getClient($type)
+    public function getClient($type)
     {
         include_once "Net/Monitor/Service/$type.php";
         $service = "Net_Monitor_Service_$type";
@@ -390,10 +390,10 @@ class Net_Monitor
      *
      * @param string $type Class / Type of alerter to fetch
      *
-     * @access private
+     * @access public
      * @return object
      */
-    function getAlerter($type)
+    public function getAlerter($type)
     {
         include_once "Net/Monitor/Alert/$type.php";
         $alerter = "Net_Monitor_Alert_$type";
@@ -409,11 +409,11 @@ class Net_Monitor
      * @param mixed  $server Server
      *
      * @return mixed
-     * @access private
+     * @access public
      */
-    function alert($method, $server)
+    public function alert($method, $server)
     {
-        $alerter =& $this->_alerters[$method];
+        $alerter = $this->_alerters[$method];
 
         // don't die on error but send a message
         PEAR::setErrorHandling(PEAR_ERROR_PRINT);
@@ -439,7 +439,7 @@ class Net_Monitor
      * @access public
      * @return void
      */
-    function saveState($results = null)
+    public function saveState($results = null)
     {
         $options = $this->_options;
 
@@ -476,7 +476,7 @@ class Net_Monitor
      * @access public
      * @return array
      */
-    function getState()
+    public function getState()
     {
         $my_line = "";
         $options = $this->_options;
@@ -523,7 +523,7 @@ class Net_Monitor
      * @access private
      * @return array
      */
-    function stateDiff($secondary)
+    public function stateDiff($secondary)
     {
         $return_array = array();
 
@@ -574,7 +574,7 @@ class Net_Monitor
      * @access public
      * @return boolean
      */
-    function resetState()
+    public function resetState()
     {
         $this->_results      = array();
         $this->_results_diff = array();
@@ -607,7 +607,7 @@ class Net_Monitor
      * @return void
      * @access public
      */
-    function resetHostState($host, $service = null)
+    public function resetHostState($host, $service = null)
     {
         $last_state = $this->getState();
         if (!isset($last_state[$host])) {
@@ -642,7 +642,7 @@ class Net_Monitor
      * @return void
      * @access public
      */
-    function printAlert($host, $service, $result)
+    public function printAlert($host, $service, $result)
     {
         $alert_line = '%h: %s: %m';
 

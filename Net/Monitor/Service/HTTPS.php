@@ -6,7 +6,7 @@
  * servers and sending meaningful alerts through a variety of media if a 
  * service becomes unavailable.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
@@ -48,28 +48,29 @@ class Net_Monitor_Service_HTTPS extends Net_Monitor_Service_HTTP
      * Defines the name of the service
      *
      * @var string $_service
-     * @access private
+     * @access protected
      */
-    var $_service = 'HTTPS';
+    protected $_service = 'HTTPS';
 
     /**
      * The prefix used to form a fully-qualified URL
      *
      * @var string $_prefix
-     * @access public
+     * @access protected
      */
-    var $_prefix = 'https://';
+    protected $_prefix = 'https://';
 
     /** 
      * function Net_Monitor_Service_HTTPS
      *
      * @access public
      */
-    function Net_Monitor_Service_HTTPS()
+    public function __construct()
     {
         if (!extension_loaded('openssl')) {
             PEAR::raiseError('Net_Monitor_Service_HTTPS requires OpenSSL');
         }
-        $this->Net_Monitor_Service_HTTP();
+
+        parent::__construct();
     }
 }

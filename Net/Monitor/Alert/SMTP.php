@@ -6,7 +6,7 @@
  * servers and sending meaningful alerts through a variety of media if a 
  * service becomes unavailable.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
@@ -60,27 +60,17 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
      * Defines the name of the service
      *
      * @var string $_service
-     * @access private
+     * @access protected
      */
-    var $_service = 'SMTP';
+    protected $_service = 'SMTP';
 
     /**
      * The alert object to be used
      *
      * @var object $_alert
-     * @access private
+     * @access protected
      */
-    var $_alert = null;
-
-    /** 
-     * function Net_Monitor_Alert_SMTP
-     *
-     * @access public
-     */
-    function Net_Monitor_Alert_SMTP()
-    {
-        
-    }
+    protected $_alert = null;
 
     /** 
      * function alert
@@ -107,10 +97,10 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
      * @param array $result_array Results
      * @param mixed $options      Options
      *
-     * @access private
+     * @access public
      * @return mixed
      */
-    function alert($server, $result_array, $options=array()) 
+    public function alert($server, $result_array, $options=array()) 
     {
         //construct $email_message from $result_array
         $email_message = '';
@@ -227,16 +217,16 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
      * @access private
      * @return mixed
      */
-    function sendAlert($email, $params, $headers, $email_message) 
+    public function sendAlert($email, $params, $headers, $email_message) 
     {
-        $mailer =& Mail::factory('smtp', $params);
+        $mailer = Mail::factory('smtp', $params);
         if (PEAR::isError($mailer)) {
             return $mailer;
         }
 
         $headers['To'] = $email;
 
-        $smtp_client =& $this->_alert;
+        $smtp_client = $this->_alert;
         
         //send message and return result
         return $mailer->send($email, $headers, $email_message);

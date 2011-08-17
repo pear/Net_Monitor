@@ -6,7 +6,7 @@
  * servers and sending meaningful alerts through a variety of media if a 
  * service becomes unavailable.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
@@ -57,24 +57,24 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
      * Defines the name of the service
      *
      * @var string $_service
-     * @access private
+     * @access protected
      */
-    var $_service = 'SMS';
+    protected $_service = 'SMS';
 
     /**
      * The alert object to be used
      *
      * @var object $_alert
-     * @access private
+     * @access protected
      */
-    var $_alert = null;
+    protected $_alert = null;
 
     /** 
      * function Net_Monitor_Alert_SMS
      *
      * @access public
      */
-    function Net_Monitor_Alert_SMS()
+    public function __construct()
     {
         $this->_alert = new Net_SMS();
     }
@@ -101,10 +101,10 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
      * @param array $result_array Results
      * @param array $options      Options
      *
-     * @access private
+     * @access public
      * @return mixed true or PEAR_Error
      */
-    function alert($server, $result_array, $options=array()) 
+    public function alert($server, $result_array, $options=array()) 
     {
         // max size of a message
         $max = 160;

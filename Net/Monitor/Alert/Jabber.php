@@ -7,7 +7,7 @@
  * WARNING: THIS IS AN EXPERIMENTAL PROOF OF CONCEPT SO FAR. THIS METHOD SENDS 
  * THE LOGIN AND PASSWORD AS PLAIN TEXT AND SHOULD NOT BE CONSIDERED SECURE.
  * 
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
@@ -44,67 +44,57 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
      * Defines the name of the service
      *
      * @var string $_service
-     * @access private
+     * @access protected
      */
-    var $_service = 'Jabber';
+    protected $_service = 'Jabber';
 
     /**
      * The alert object to be used (if any)
      *
      * @var object $_alert
-     * @access private
+     * @access protected
      */
-    var $_alert = null;
+    protected $_alert = null;
 
     /**
      * The default port to be used
      *
      * @var int $_port
-     * @access private
+     * @access protected
      */
-    var $_port = 5222;
+    protected $_port = 5222;
 
     /**
      * The resource name to specify to the server
      *
      * @var string $_resource
-     * @access private
+     * @access protected
      */
-    var $_resource = 'Net_Monitor_Alert_Jabber';
+    protected $_resource = 'Net_Monitor_Alert_Jabber';
 
     /**
      * Any socket error numbers
      *
      * @var int $_sockErr
-     * @access private
+     * @access protected
      */
-    var $_sockErr = 0;
+    protected $_sockErr = 0;
 
     /**
      * Any socket error messages
      *
      * @var string $_sockErrMsg
-     * @access private
+     * @access protected
      */
-    var $_sockErrMsg = false;
+    protected $_sockErrMsg = false;
 
     /**
      * Max expected server response length
      *
      * @var string $_maxResponseLength
-     * @access private
+     * @access protected
      */
-    var $_maxResponseLength = 4096;
-
-    /** 
-     * constructor
-     *
-     * @access public
-     */
-    function Net_Monitor_Alert_Jabber()
-    {
-        //nothing to initialize
-    }
+    protected $_maxResponseLength = 4096;
 
     /** 
      * Sends the alerts thru the specified Jabber servers and accounts
@@ -127,9 +117,9 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
      * @param array $options      standard Net_Monitor options
      *
      * @return mixed true or PEAR_Error
-     * @access private
+     * @access public
      */
-    function alert($server, $result_array, $options=array()) 
+    public function alert($server, $result_array, $options=array()) 
     {
         $im_message = '';
         if (isset($options['alert_line'])) {
@@ -184,9 +174,9 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
      * @param string $message   message to send
      *
      * @return mixed
-     * @access private
+     * @access public
      */
-    function sendAlert($server, $recipient, $login, $password, $message)
+    public function sendAlert($server, $recipient, $login, $password, $message)
     {
         if (!is_string($server) || !is_string($recipient) || !is_string($login) || !is_string($password) ||!is_string($message)) {
             return new Pear_Error('Net_Monitor_Alert_Jabber received incorrect arguments. server is '.gettype($server).', recipient is '.gettype($recipient).', login is '.gettype($login).', password is '.gettype($password).', message = '.gettype($message));

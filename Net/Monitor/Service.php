@@ -6,7 +6,7 @@
  * servers and sending meaningful alerts through a variety of media if a
  * service becomes unavailable.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
@@ -43,25 +43,25 @@ class Net_Monitor_Service
      * Defines the name of the service
      *
      * @var string $_service
-     * @access private
+     * @access protected
      */
-    var $_service = 'Generic';
+    protected $_service = 'Generic';
 
     /**
      * The client object used for testing
      *
      * @var object $_client
-     * @access private
+     * @access protected
      */
-    var $_client = null;
+    protected $_client = null;
 
     /**
      * The last response code received
      *
      * @var int $_last_code
-     * @access private
+     * @access protected
      */
-    var $_last_code = -1;
+    protected $_last_code = -1;
 
     /**
      * function check
@@ -73,7 +73,7 @@ class Net_Monitor_Service
      *
      * @return mixed
      */
-    function check($server)
+    public function check($server)
     {
         return array(-1, 'not yet implemented');
     }

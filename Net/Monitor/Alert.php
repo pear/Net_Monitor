@@ -6,7 +6,7 @@
  * servers and sending meaningful alerts through a variety of media if a
  * service becomes unavailable.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
@@ -44,9 +44,9 @@ class Net_Monitor_Alert
      * Defines the name of the service
      *
      * @var string $_service
-     * @access private
+     * @access protected
      */
-    var $_service = 'Generic';
+    protected $_service = 'Generic';
 
     /**
      * The alert object used for sending alerts
@@ -54,7 +54,7 @@ class Net_Monitor_Alert
      * @var object $_alert
      * @access private
      */
-    var $_alert = null;
+    protected $_alert = null;
 
     /**
      * function alert
@@ -71,10 +71,10 @@ class Net_Monitor_Alert
      * @param array $results Results array
      * @param array $options Options
      *
-     * @access private
+     * @access public
      * @return mixed
      */
-    function alert($server, $results, $options=array())
+    public function alert($server, $results, $options=array())
     {
         print "ALERT: $server ".$this->_service." not yet implemented\n";
         print_r($results);

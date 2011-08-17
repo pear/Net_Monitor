@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.9.3" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>Net_Monitor</name>
  <channel>pear.php.net</channel>
  <summary>Remote Service Monitor</summary>
@@ -16,11 +16,11 @@
   <email>bertrand@toggg.com</email>
   <active>yes</active>
  </lead>
- <date>2010-09-20</date>
- <time>09:59:42</time>
+ <date>2011-08-17</date>
+ <time>23:53:44</time>
  <version>
-  <release>0.2.5</release>
-  <api>0.2.4</api>
+  <release>0.3.0</release>
+  <api>0.3.0</api>
  </version>
  <stability>
   <release>beta</release>
@@ -28,41 +28,41 @@
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>
-QA release
-package 2.0
-Bug #8310 Modify Alert_Jabber to use Auth Digest
-Bug #14902 E_NOTICE error
+QA Release
+BC Break - PHP4 support removed
+Swap to HTTP_Request2
+Swap to Net_DNS2
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
-   <file baseinstalldir="Net" md5sum="07715a20ed26ddc49349998a0a200cae" name="doc/README.txt" role="doc" />
-   <file baseinstalldir="Net" md5sum="23ff9c4d75c3e3e2719c2c19f1aa327c" name="examples/complex.php" role="doc" />
-   <file baseinstalldir="Net" md5sum="e96c7430382252b653bbba6b7753a21f" name="examples/config.ini.php" role="doc" />
-   <file baseinstalldir="/" md5sum="16ed961f2d77a198a57002118f103667" name="examples/growl.php" role="doc" />
-   <file baseinstalldir="Net" md5sum="7adb264b505596e36fb08783bd427a1e" name="examples/ini_example.php" role="doc" />
-   <file baseinstalldir="/" md5sum="154bf58bc2e374d85c257a5c45f5cb64" name="examples/jabber.php" role="doc" />
-   <file baseinstalldir="Net" md5sum="74d3024d52d7ae3c0aa5f72feb725c4e" name="examples/simple.php" role="doc" />
-   <file baseinstalldir="Net" md5sum="87d996a2b81194580c0f407a144b6987" name="examples/SMS.ini.php" role="doc" />
-   <file baseinstalldir="/" md5sum="8bb16647aa796b4ef91908a10019135f" name="Net/Monitor.php" role="php" />
-   <file baseinstalldir="/" md5sum="80861e06c1746d0fadeb4bd5f1bdece9" name="Net/Monitor/Alert.php" role="php" />
-   <file baseinstalldir="/" md5sum="5186474f536e890968df71b18f3c7aa4" name="Net/Monitor/Service.php" role="php" />
-   <file baseinstalldir="/" md5sum="1be902d700e3e72e2d98a992f320d183" name="Net/Monitor/Alert/Growl.php" role="php" />
-   <file baseinstalldir="/" md5sum="7f80c94c1a1499a35aadb97e54f1947e" name="Net/Monitor/Alert/Jabber.php" role="php" />
-   <file baseinstalldir="/" md5sum="396feed03a9a93b336312d4469213cbe" name="Net/Monitor/Alert/SMS.php" role="php" />
-   <file baseinstalldir="/" md5sum="d0a28efef3479a9177d94ec09075105d" name="Net/Monitor/Alert/SMTP.php" role="php" />
-   <file baseinstalldir="/" md5sum="eac650f58fed46115f23da84938a51ad" name="Net/Monitor/Service/DNS.php" role="php" />
-   <file baseinstalldir="/" md5sum="a46b1ff78712470c8677f9adbdd76dc1" name="Net/Monitor/Service/FTP.php" role="php" />
-   <file baseinstalldir="/" md5sum="18e281bf4c5b2aa31701f82209a7448c" name="Net/Monitor/Service/HTTP.php" role="php" />
-   <file baseinstalldir="/" md5sum="a27bea727a00d60cb73f47fe7a6d5939" name="Net/Monitor/Service/HTTPS.php" role="php" />
-   <file baseinstalldir="/" md5sum="4d85744552ec239fbb81c7dbf29b910b" name="Net/Monitor/Service/SMTP.php" role="php" />
-   <file baseinstalldir="Net" md5sum="9a00e4130341fa2135679fdf287ad4a9" name="tests/alert.phpt" role="test" />
-   <file baseinstalldir="Net" md5sum="f1f4da7a56b525edd860eb9c0018db77" name="tests/alertSMS.phpt" role="test" />
-   <file baseinstalldir="Net" md5sum="e721ca4040225c66d6d61e843e1b3a27" name="tests/custom.phpt" role="test" />
-   <file baseinstalldir="Net" md5sum="880afb029be8a4262f0d9dd7413478e5" name="tests/diff.phpt" role="test" />
-   <file baseinstalldir="Net" md5sum="41321c0bac61b37617c97de13a42bf9d" name="tests/down.phpt" role="test" />
-   <file baseinstalldir="Net" md5sum="2a52b5e5e4c7bd994abda389786ee4d8" name="tests/multiple.phpt" role="test" />
-   <file baseinstalldir="Net" md5sum="a48082878068cccc5db6ba6542507a32" name="tests/reset.phpt" role="test" />
-   <file baseinstalldir="Net" md5sum="2539c0cbfff299c7f38baeec6edefb60" name="tests/working.phpt" role="test" />
+   <file baseinstalldir="Net" md5sum="0ac80bc8442eb6ff3323f8ea7ee270d7" name="doc/README.txt" role="doc" />
+   <file baseinstalldir="Net" md5sum="f76f593eeae1367460415f4f502df9c8" name="examples/complex.php" role="doc" />
+   <file baseinstalldir="Net" md5sum="32c9cd20b0bc59ef130bafb4ba931048" name="examples/config.ini.php" role="doc" />
+   <file baseinstalldir="/" md5sum="77c1d414a6839c2db86cffc7789521ec" name="examples/growl.php" role="doc" />
+   <file baseinstalldir="Net" md5sum="425584e127655c019b3efed83134e431" name="examples/ini_example.php" role="doc" />
+   <file baseinstalldir="/" md5sum="350eb3ae56b2e2c89df528bf80682a83" name="examples/jabber.php" role="doc" />
+   <file baseinstalldir="Net" md5sum="b9a5a01f182f67a5f6406364ed77c65f" name="examples/simple.php" role="doc" />
+   <file baseinstalldir="Net" md5sum="e66790e7b658602374cb910e619d8362" name="examples/SMS.ini.php" role="doc" />
+   <file baseinstalldir="/" md5sum="0f569eb006a469efd861921497e84c82" name="Net/Monitor.php" role="php" />
+   <file baseinstalldir="/" md5sum="f28f37a8b06b0445c444e5846fa41df5" name="Net/Monitor/Alert.php" role="php" />
+   <file baseinstalldir="/" md5sum="6b8ba8794fba0e6a0af1f711ac167a83" name="Net/Monitor/Service.php" role="php" />
+   <file baseinstalldir="/" md5sum="af31e7058f9ef515193a8ae91a073542" name="Net/Monitor/Alert/Growl.php" role="php" />
+   <file baseinstalldir="/" md5sum="194a10eace6611d713acdc38c157377a" name="Net/Monitor/Alert/Jabber.php" role="php" />
+   <file baseinstalldir="/" md5sum="bfd2382eb4629e5419be0ee25059eecf" name="Net/Monitor/Alert/SMS.php" role="php" />
+   <file baseinstalldir="/" md5sum="c503c7819562d22ffcab1326aa73786b" name="Net/Monitor/Alert/SMTP.php" role="php" />
+   <file baseinstalldir="/" md5sum="e4a020325eda271b8fe05b64d2fc548b" name="Net/Monitor/Service/DNS.php" role="php" />
+   <file baseinstalldir="/" md5sum="397a45a4e97832b01b79e4a90885dad4" name="Net/Monitor/Service/FTP.php" role="php" />
+   <file baseinstalldir="/" md5sum="83d6f9537213d317838c94fbd5067b8f" name="Net/Monitor/Service/HTTP.php" role="php" />
+   <file baseinstalldir="/" md5sum="af2f918c46d5e98d218df2ea50d7e1a3" name="Net/Monitor/Service/HTTPS.php" role="php" />
+   <file baseinstalldir="/" md5sum="c64c78645354cfbee96e447f6e060870" name="Net/Monitor/Service/SMTP.php" role="php" />
+   <file baseinstalldir="Net" md5sum="f015d118196f9d394fdd71df0d314b0e" name="tests/alert.phpt" role="test" />
+   <file baseinstalldir="Net" md5sum="accefa04f5d4f8e34cd9b9b6869ec41a" name="tests/alertSMS.phpt" role="test" />
+   <file baseinstalldir="Net" md5sum="27f9673b6f4e77285259460eb8c361a5" name="tests/custom.phpt" role="test" />
+   <file baseinstalldir="Net" md5sum="9747072466bb4ceba1f9401d9d56cb97" name="tests/diff.phpt" role="test" />
+   <file baseinstalldir="Net" md5sum="6338064961f092074a77f0902fe48258" name="tests/down.phpt" role="test" />
+   <file baseinstalldir="Net" md5sum="24c3ee62c1b49fb6748d57e201a50462" name="tests/multiple.phpt" role="test" />
+   <file baseinstalldir="Net" md5sum="231692c4e2ff4db4830fea8fb50ef364" name="tests/reset.phpt" role="test" />
+   <file baseinstalldir="Net" md5sum="4988a3df67feb4429665edabd8e1b4eb" name="tests/working.phpt" role="test" />
   </dir>
  </contents>
  <dependencies>
@@ -235,6 +235,24 @@ QA release
 package 2.0
 Bug #8310 Modify Alert_Jabber to use Auth Digest
 Bug #14902 E_NOTICE error
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.3.0</release>
+    <api>0.3.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2011-08-17</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>
+QA Release
+BC Break - PHP4 support removed
+Swap to HTTP_Request2
+Swap to Net_DNS2
    </notes>
   </release>
  </changelog>

@@ -6,7 +6,7 @@
  *
  * WARNING: THIS IS AN EXPERIMENTAL PROOF OF CONCEPT SO FAR.
  * 
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
@@ -48,9 +48,9 @@ class Net_Monitor_Alert_Growl extends Net_Monitor_Alert
      * Defines the name of the service
      *
      * @var string $_service
-     * @access private
+     * @access protected
      */
-    var $_service = 'Growl';
+    protected $_service = 'Growl';
 
     /**
      * Array of alert objects to be used
@@ -58,51 +58,41 @@ class Net_Monitor_Alert_Growl extends Net_Monitor_Alert
      * in the format $messenger => $object
      *
      * @var array $_alert
-     * @access private
+     * @access protected
      */
-    var $_alert = array();
+    protected $_alert = array();
 
     /**
      * The default port to be used
      *
      * @var int $_port
-     * @access private
+     * @access protected
      */
-    var $_port = null;
+    protected $_port = null;
 
     /**
      * The default protocol to be used
      *
      * @var int $_protocol
-     * @access private
+     * @access protected
      */
-    var $_protocol = 'udp';
+    protected $_protocol = 'udp';
 
     /**
      * Net_Growl specific options
      *
      * @var int $_options
-     * @access private
+     * @access protected
      */
-    var $_options = array();
+    protected $_options = array();
 
     /**
      * The resource name to specify to the messenger
      *
      * @var string $_resource
-     * @access private
+     * @access protected
      */
-    var $_resource = 'Net_Monitor_Alert_Growl';
-
-    /** 
-     * constructor
-     *
-     * @access public
-     */
-    function Net_Monitor_Alert_Growl()
-    {
-        //nothing to initialize
-    }
+    protected $_resource = 'Net_Monitor_Alert_Growl';
 
     /** 
      * Sends the alerts thru the specified Growl server with optional password
@@ -123,9 +113,9 @@ class Net_Monitor_Alert_Growl extends Net_Monitor_Alert
      * @param array $options      standard Net_Monitor options
      *
      * @return mixed true or PEAR_Error
-     * @access private
+     * @access public
      */
-    function alert($server, $result_array, $options=array()) 
+    public function alert($server, $result_array, $options = array()) 
     {
         $message = '';
         if (isset($options['alert_line'])) {
@@ -185,9 +175,9 @@ class Net_Monitor_Alert_Growl extends Net_Monitor_Alert
      * @param string $subject   optional subject line
      *
      * @return mixed
-     * @access private
+     * @access public
      */
-    function sendAlert($message, $messenger, $server = '', $password = '', $subject = '')
+    public function sendAlert($message, $messenger, $server = '', $password = '', $subject = '')
     {
         if (!is_string($message) || strlen($message) == 0) {
             return new Pear_Error('Net_Monitor_Alert_Growl requires a message.');
@@ -215,7 +205,7 @@ class Net_Monitor_Alert_Growl extends Net_Monitor_Alert
             $this->_alert[$messenger] = new Net_Growl($application, array($messenger), $password, $server_array);
         }
 
-        $growl =& $this->_alert[$messenger];
+        $growl = $this->_alert[$messenger];
         return $growl->notify($messenger, $subject, $message, $this->_options);
         
     }
