@@ -138,8 +138,7 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
 
         foreach ($server as $user=>$where) {
             if (!is_array($where)) {
-                PEAR::raiseError('server paramaters are not in an array -- unable to send alert');
-                return false;
+                throw new Net_Monitor_Exception('server paramaters are not in an array -- unable to send alert');
             }
             if (is_string($where['server'])) {
                 $server_addr = $where['server'];

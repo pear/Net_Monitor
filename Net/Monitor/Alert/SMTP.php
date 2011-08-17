@@ -127,15 +127,11 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
         if (!empty($options['subject_line'])) {
             $headers['Subject'] = $options['subject_line'];
         } else {
-            PEAR::raiseError("Using default subject\n",
-                 null, PEAR_ERROR_PRINT, E_USER_WARNING);
             $headers['Subject'] = 'Net_Monitor Alert';
         }
         if (!empty($options['from_email'])) {
             $headers['From'] = $options['from_email'];
         } else {
-            PEAR::raiseError("Using default email 'from': pear.Net_Monitor\n",
-                 null, PEAR_ERROR_PRINT, E_USER_WARNING);
             $headers['From'] = 'pear.Net_Monitor';
         }
         
@@ -150,8 +146,7 @@ class Net_Monitor_Alert_SMTP extends Net_Monitor_Alert
                 continue;
             }
             if (!is_array($where)) {
-                PEAR::raiseError('$server is not a string or array -- unable to send alert');
-                return false;
+                throw new Net_Monitor_Exception('$server is not a string or array -- unable to send alert');
             }
 
             $params = array();

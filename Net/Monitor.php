@@ -24,10 +24,7 @@
  * @link      http://pear.php.net/package/Net_Monitor
  * @since     File available since Release 0.0.6
  */
-/**
- * Requires the main Pear class
- */
-require_once 'PEAR.php';
+require_once 'Net/Monitor/Exception.php';
 
 /**
  * class Net_Monitor
@@ -261,7 +258,7 @@ class Net_Monitor
                 }
             }
         } else {
-            PEAR::raiseError('No services found to check.');
+            throw new Net_Monitor_Excepton('No services found to check.');
         }
 
         if (is_array($this->_results) && sizeof($this->_results) > 0) {
@@ -447,12 +444,12 @@ class Net_Monitor
         $file = $options['state_file'];
 
         if (!is_writable($path)) {
-            PEAR::raiseError($path.' is not writeable');
+            throw new Net_Monitor_Exception($path.' is not writeable');
         }
 
         if (file_exists($path.$file)) {
             if (!is_writable($path.$file)) {
-                PEAR::raiseError($path.$file.' exists but is not writeable');
+                throw new Net_Monitor_Exception($path.$file.' exists but is not writeable');
             }
         }
 
@@ -486,7 +483,7 @@ class Net_Monitor
 
         if (file_exists($path . $file)) {
             if (!is_readable($path.$file)) {
-                PEAR::raiseError($path.$file.' exists but is not readable');
+                throw new Net_Monitor_Exception($path.$file.' exists but is not readable');
             }
         } else {
             return array();
@@ -586,7 +583,7 @@ class Net_Monitor
 
         if (file_exists($path.$file)) {
             if (!is_writable($path.$file)) {
-                PEAR::raiseError($path.$file.' exists but is not writeable');
+                throw new Net_Monitor_Exception($path.$file.' exists but is not writeable');
             }
             return unlink($path.$file);
         }

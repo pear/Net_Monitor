@@ -159,8 +159,7 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
                 $where = array_merge($options['SMS_default'],
                                      array('phone_number' => $where));
             } elseif (!is_array($where)) {
-                PEAR::raiseError('user param is not a string or array -- unable to send alert');
-                return false;
+                throw new Net_Monitor_Exception('user param is not a string or array -- unable to send alert');
             }
 
             $SMS_provider = $where['SMS_provider'];
@@ -205,7 +204,7 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
                     continue;
                 }
 
-                $sender =& Net_SMS::factory($SMS_provider,
+                $sender = Net_SMS::factory($SMS_provider,
                                     $accPar[$SMS_provider][$username]);
 
                 if (PEAR::isError($sender)) {
