@@ -152,10 +152,7 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
             if (is_string($where['password'])) {
                 $password = $where['password'];
             }
-            $e = $this->sendAlert($server_addr, $recipient, $login, $password, $im_message);
-            if (Pear::isError($e)) {
-                return $e;
-            }
+            $this->sendAlert($server_addr, $recipient, $login, $password, $im_message);
         }
 
         return true;
@@ -178,11 +175,11 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
     public function sendAlert($server, $recipient, $login, $password, $message)
     {
         if (!is_string($server) || !is_string($recipient) || !is_string($login) || !is_string($password) ||!is_string($message)) {
-            return new Pear_Error('Net_Monitor_Alert_Jabber received incorrect arguments. server is '.gettype($server).', recipient is '.gettype($recipient).', login is '.gettype($login).', password is '.gettype($password).', message = '.gettype($message));
+            throw new Net_Monitor_Exception('Net_Monitor_Alert_Jabber received incorrect arguments. server is '.gettype($server).', recipient is '.gettype($recipient).', login is '.gettype($login).', password is '.gettype($password).', message = '.gettype($message));
         }
 
         if ((strlen($server) == 0) || (strlen($recipient) == 0) || (strlen($login) == 0) || (strlen($password) == 0) || (strlen($message) == 0)) {
-            return new Pear_Error("Net_Monitor_Alert_Jabber received insufficeint arguments. server = $server, recipient = $recipient, login = $login, password = $password, message = $message");
+            throw new Net_Monitor_Exception("Net_Monitor_Alert_Jabber received insufficeint arguments. server = $server, recipient = $recipient, login = $login, password = $password, message = $message");
         }
 
         //send Jabber alert here
@@ -205,7 +202,7 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
         if ($sockErr || $sockErrMsg) {
             $this->_sockErr    = $sockErr;
             $this->_sockErrMsg = $sockErrMsg;
-            return new Pear_Error("Socket error $sockErr: $sockErrMsg");
+            throw new Net_Monitor_Exception("Socket error $sockErr: $sockErrMsg");
         }
 
         $response = fread($fp, $this->_maxResponseLength);
@@ -246,11 +243,11 @@ class Net_Monitor_Alert_Jabber extends Net_Monitor_Alert
                     //panic, this is probably an error
                     fwrite($fp, '</stream:stream>');
                     fclose($fp);
-                    return new Pear_Error($message_response);
+                    throw new Net_Monitor_Exception($message_response);
                 }
             }
         } else {
-            return new Pear_Error('No response from '.$server);
+            throw new Net_Monitor_Exception('No response from '.$server);
         }
         fwrite($fp, '</stream:stream>');
         $response .= fread($fp, $this->_maxResponseLength);

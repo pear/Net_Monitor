@@ -154,10 +154,7 @@ class Net_Monitor_Alert_Growl extends Net_Monitor_Alert
             if (is_string($where['password'])) {
                 $password = $where['password'];
             }
-            $e = $this->sendAlert($message, $messenger, $server_addr, $password, $subject);
-            if (Pear::isError($e)) {
-                return $e;
-            }
+            $this->sendAlert($message, $messenger, $server_addr, $password, $subject);
         }
         return true;
     } // alert()
@@ -179,7 +176,7 @@ class Net_Monitor_Alert_Growl extends Net_Monitor_Alert
     public function sendAlert($message, $messenger, $server = '', $password = '', $subject = '')
     {
         if (!is_string($message) || strlen($message) == 0) {
-            return new Pear_Error('Net_Monitor_Alert_Growl requires a message.');
+            throw new Net_Monitor_Exception('Net_Monitor_Alert_Growl requires a message.');
         }
 
         //send Growl alert here
