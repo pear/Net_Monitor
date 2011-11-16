@@ -13,7 +13,6 @@ This file tests connectivity to services known not to be working on example.com 
  *
  */
 require_once('Net/Monitor.php');
-error_reporting(E_ALL);
 $services = array('example.com'=>array('DNS','FTP','HTTPS'));
 $alerts = array('foo' => array('SMTP' => 'foo@example.com'));
 $options = array('state_file' => 'Net_Monitor_TestSuite');

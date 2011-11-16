@@ -15,7 +15,6 @@ This file tests the alerting mechanism by simulating a variety of circumstances 
  *
  */
 require_once 'Net/Monitor.php';
-error_reporting(E_ALL);
 
 $primary = array(
     'foo.example.com'=>array(

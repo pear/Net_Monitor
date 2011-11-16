@@ -21,7 +21,6 @@ This file tests services known not to be operating at example.com. This file als
  *
  */
 require_once('Net/Monitor.php');
-error_reporting(E_ALL);
 $services = array('example.com'=>array('DNS','FTP'));
 $alerts = array();
 $options = array('state_file' => 'Net_Monitor_TestSuite');

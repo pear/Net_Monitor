@@ -14,7 +14,6 @@ This file tests connectivity to known working services on php.net - SMTP and HTT
  *
  */
 require_once('Net/Monitor.php');
-error_reporting(E_ALL);
 $services = array('www.php.net'=>array('SMTP','HTTP'),'pear.php.net'=>array('HTTP'));
 $alerts = array(); //use this to output to STDOUT
 $options = array('state_file' => 'Net_Monitor_TestSuite');
