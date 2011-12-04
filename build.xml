@@ -58,7 +58,7 @@
 
 	<target name="phpunit">
 		<exec dir="${basedir}" executable="${phpunit.bin}" failonerror="true">
-			<arg line="-d error_reporting=30719 --include-path lib/Net_SMS:lib/Net_SMPP_Client:lib/Net_SMPP:lib/HTTP_Request2:lib/Net_FTP ."/>
+			<arg line="."/>
 		</exec>
 	</target>
 
