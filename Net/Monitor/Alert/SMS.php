@@ -76,7 +76,7 @@ class Net_Monitor_Alert_SMS extends Net_Monitor_Alert
      */
     public function __construct()
     {
-        $this->_alert = new Net_SMS();
+        $this->_alert = new Net_SMS(array());
     }
 
     /** 
