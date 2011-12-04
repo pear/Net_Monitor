@@ -43,7 +43,7 @@ $secondary = array(
  * bar.example.com HTTP changed from down to 404 (send notice)
  */
 $monitor = new Net_Monitor();
-$monitor->_results = $primary;
+$monitor->setResults($primary);
 $result = $monitor->stateDiff($secondary);
 print_r($result);
 /* Should produce:

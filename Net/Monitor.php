@@ -160,6 +160,16 @@ class Net_Monitor
         }
     }
 
+    public function getResults()
+    {
+        return $this->_results;
+    }
+
+    public function setResults($results) 
+    {
+        $this->_results = $results;
+    }
+
     /**
      * function setOptions
      *
@@ -236,11 +246,12 @@ class Net_Monitor
      */
     public function checkAll()
     {
-        //initialize the _results and _results_diff arrays
-        $this->_results      = array();
+        //initialize the results and _results_diff arrays
+        $results = array();
+        $this->setResults($results);
         $this->_results_diff = array();
 
-        //check all services and populate the _results array
+        //check all services and populate the results array
         if (is_array($this->_services) && sizeof($this->_services) > 0) {
 
             //load client objects once and only once per service
@@ -250,7 +261,8 @@ class Net_Monitor
                 foreach ($services as $service) {
                     $result = $this->check($server, $service);
                     if ($result) {
-                        $this->_results[$server][$service] = $result;
+                        $results[$server][$service] = $result;
+                        $this->setResults($results);
                     }
                 }
             }
@@ -258,7 +270,7 @@ class Net_Monitor
             throw new Net_Monitor_Excepton('No services found to check.');
         }
 
-        if (is_array($this->_results) && sizeof($this->_results) > 0) {
+        if (is_array($results) && sizeof($results) > 0) {
             $last_state = $this->getState();
             $this->saveState();
             $this->_results_diff = $this->stateDiff($last_state);
