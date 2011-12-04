@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <project name="Net_Monitor" default="build" basedir=".">
 	<condition property="phpunit.bin" value="phpunit.bat" else="phpunit">
-        <os family="windows"/>
-    </condition>
+		<os family="windows"/>
+	</condition>
 
 	<condition property="pear.bin" value="pear.bat" else="pear">
-        <os family="windows"/>
-    </condition>
+		<os family="windows"/>
+	</condition>
 
 	<target name="clean" description="Clean up and create artifact directories">
 		<delete dir="${basedir}/lib" />
@@ -25,22 +25,27 @@
 		<mkdir dir="${basedir}/build/logs"/>
 		<mkdir dir="${basedir}/build/pdepend"/>
 
-        <!-- Net_SMS and dependencies -->
+		<exec dir="${basedir}" executable="git" failonerror="true">
+			<arg line="clone git://github.com/pear/Net_FTP.git lib/Net_FTP" />
+		</exec>
+
+
+		<!-- Net_SMS and dependencies -->
 		<exec dir="${basedir}" executable="git" failonerror="true">
 			<arg line="clone git://github.com/pear/Net_SMS.git lib/Net_SMS" />
 		</exec>
 
-        <exec dir="${basedir}" executable="svn">
-            <arg line="export --force https://svn.php.net/repository/pear/packages/Net_SMPP/trunk lib/Net_SMPP/" />
-        </exec>
+		<exec dir="${basedir}" executable="svn">
+			<arg line="export --force https://svn.php.net/repository/pear/packages/Net_SMPP/trunk lib/Net_SMPP/" />
+		</exec>
 
-        <exec dir="${basedir}" executable="git">
-            <arg line="clone git://github.com/pear/Net_SMPP_Client.git lib/Net_SMPP_Client/" />
-        </exec>
+		<exec dir="${basedir}" executable="git">
+			<arg line="clone git://github.com/pear/Net_SMPP_Client.git lib/Net_SMPP_Client/" />
+		</exec>
 
-        <exec dir="${basedir}" executable="svn">
-            <arg line="export --force https://svn.php.net/repository/pear/packages/HTTP_Request2/trunk lib/HTTP_Request2" />
-        </exec>
+		<exec dir="${basedir}" executable="svn">
+			<arg line="export --force https://svn.php.net/repository/pear/packages/HTTP_Request2/trunk lib/HTTP_Request2" />
+		</exec>
 	</target>
 
 	<target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer">
@@ -53,7 +58,7 @@
 
 	<target name="phpunit">
 		<exec dir="${basedir}" executable="${phpunit.bin}" failonerror="true">
-			<arg line="--include-path lib/Net_SMS:lib/Net_SMPP_Client:lib/Net_SMPP:lib/HTTP_Request2 ."/>
+			<arg line="-d error_reporting=30719 --include-path lib/Net_SMS:lib/Net_SMPP_Client:lib/Net_SMPP:lib/HTTP_Request2:lib/Net_FTP ."/>
 		</exec>
 	</target>
 
