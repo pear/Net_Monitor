@@ -158,9 +158,6 @@ class Net_Monitor
         if (is_array($alerts) && sizeof($alerts) > 0) {
             $this->setAlerts($alerts);
         }
-
-        // don't die on errors and no messages (failing checks produce normal warnings)
-        PEAR::setErrorHandling(PEAR_ERROR_RETURN);
     }
 
     /**
@@ -413,11 +410,7 @@ class Net_Monitor
         $alerter = $this->_alerters[$method];
 
         // don't die on error but send a message
-        PEAR::setErrorHandling(PEAR_ERROR_PRINT);
         $ret = $alerter->alert($server, $this->_results_diff, $this->_options);
-
-        // don't die on errors and no messages (failing checks produce normal warnings)
-        PEAR::setErrorHandling(PEAR_ERROR_RETURN);
 
         return $ret;
     }
