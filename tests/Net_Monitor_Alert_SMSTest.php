@@ -1,5 +1,5 @@
 <?php
-require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Framework/TestCase.php';
 require_once 'Net/Monitor/Alert/SMS.php';
 
 class Net_Monitor_Alert_SMSTest extends PHPUnit_Framework_TestCase {
