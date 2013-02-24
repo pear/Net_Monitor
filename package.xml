@@ -44,6 +44,7 @@ Swap to Net_DNS2
    <file baseinstalldir="Net" md5sum="b9a5a01f182f67a5f6406364ed77c65f" name="examples/simple.php" role="doc" />
    <file baseinstalldir="Net" md5sum="e66790e7b658602374cb910e619d8362" name="examples/SMS.ini.php" role="doc" />
    <file baseinstalldir="/" md5sum="0f569eb006a469efd861921497e84c82" name="Net/Monitor.php" role="php" />
+   <file baseinstalldir="/" md5sum="f28f37a8b06b0445c444e5846fa41df5" name="Net/Monitor/Exception.php" role="php" />
    <file baseinstalldir="/" md5sum="f28f37a8b06b0445c444e5846fa41df5" name="Net/Monitor/Alert.php" role="php" />
    <file baseinstalldir="/" md5sum="6b8ba8794fba0e6a0af1f711ac167a83" name="Net/Monitor/Service.php" role="php" />
    <file baseinstalldir="/" md5sum="af31e7058f9ef515193a8ae91a073542" name="Net/Monitor/Alert/Growl.php" role="php" />
@@ -56,7 +57,6 @@ Swap to Net_DNS2
    <file baseinstalldir="/" md5sum="af2f918c46d5e98d218df2ea50d7e1a3" name="Net/Monitor/Service/HTTPS.php" role="php" />
    <file baseinstalldir="/" md5sum="c64c78645354cfbee96e447f6e060870" name="Net/Monitor/Service/SMTP.php" role="php" />
    <file baseinstalldir="Net" md5sum="f015d118196f9d394fdd71df0d314b0e" name="tests/alert.phpt" role="test" />
-   <file baseinstalldir="Net" md5sum="accefa04f5d4f8e34cd9b9b6869ec41a" name="tests/alertSMS.phpt" role="test" />
    <file baseinstalldir="Net" md5sum="27f9673b6f4e77285259460eb8c361a5" name="tests/custom.phpt" role="test" />
    <file baseinstalldir="Net" md5sum="9747072466bb4ceba1f9401d9d56cb97" name="tests/diff.phpt" role="test" />
    <file baseinstalldir="Net" md5sum="6338064961f092074a77f0902fe48258" name="tests/down.phpt" role="test" />
