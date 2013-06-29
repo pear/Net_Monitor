@@ -105,6 +105,11 @@ Swap to Net_DNS2
     <channel>pear.php.net</channel>
     <min>0.0.3</min>
    </package>
+   <package>
+     <name>Net_Growl</name>
+     <channel>pear.php.net</channel>
+     <min>2.7.0</min>
+   </package>
   </optional>
  </dependencies>
  <phprelease />
