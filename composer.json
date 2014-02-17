@@ -13,7 +13,7 @@
     ],
     "autoload": {
         "psr-0": {
-            "Net_Monitor": "./"
+            "Net": "./"
         }
     },
     "description": "More info available on: http://pear.php.net/package/Net_Monitor",
@@ -32,5 +32,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "*"
+    },
+    "suggest": {
+        "pear/mail": "Install optionally via your project's composer.json"
     }
 }
