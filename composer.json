@@ -1,0 +1,36 @@
+{
+    "authors": [
+        {
+            "email": "cyberscribe@php.net",
+            "name": "Robert Peake",
+            "role": "Lead"
+        },
+        {
+            "email": "bertrand@toggg.com",
+            "name": "Bertrand Gugger",
+            "role": "Lead"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Net_Monitor": "./"
+        }
+    },
+    "description": "More info available on: http://pear.php.net/package/Net_Monitor",
+    "include-path": [
+        "./"
+    ],
+    "license": "PHP License",
+    "name": "pear/net_monitor",
+    "support": {
+        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Net_Monitor",
+        "source": "https://github.com/pear/Net_Monitor"
+    },
+    "type": "library",
+    "require": {
+        "pear/pear_exception": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    }
+}
