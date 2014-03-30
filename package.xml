@@ -270,8 +270,6 @@ QA release
 19834 Net_Monitor_Exception not in repository	kguest
 19978 requires pear(Net/Growl.php)	doconnor
 BC Break - PHP4 support removed
-Swap to HTTP_Request2
-Swap to Net_DNS2
    </notes>
   </release>
  </changelog>
