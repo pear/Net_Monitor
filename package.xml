@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.9.3" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.9.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>Net_Monitor</name>
  <channel>pear.php.net</channel>
  <summary>Remote Service Monitor</summary>
@@ -16,8 +16,8 @@
   <email>bertrand@toggg.com</email>
   <active>yes</active>
  </lead>
- <date>2011-08-17</date>
- <time>23:53:44</time>
+ <date>2014-03-30</date>
+ <time>23:26:10</time>
  <version>
   <release>0.3.0</release>
   <api>0.3.0</api>
@@ -28,7 +28,10 @@
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>
-QA Release
+QA release
+19011 remove error_reporting (for PEAR QA team)	danielc
+19834 Net_Monitor_Exception not in repository	kguest
+19978 requires pear(Net/Growl.php)	doconnor
 BC Break - PHP4 support removed
 Swap to HTTP_Request2
 Swap to Net_DNS2
@@ -43,26 +46,41 @@ Swap to Net_DNS2
    <file baseinstalldir="/" md5sum="350eb3ae56b2e2c89df528bf80682a83" name="examples/jabber.php" role="doc" />
    <file baseinstalldir="Net" md5sum="b9a5a01f182f67a5f6406364ed77c65f" name="examples/simple.php" role="doc" />
    <file baseinstalldir="Net" md5sum="e66790e7b658602374cb910e619d8362" name="examples/SMS.ini.php" role="doc" />
-   <file baseinstalldir="/" md5sum="0f569eb006a469efd861921497e84c82" name="Net/Monitor.php" role="php" />
-   <file baseinstalldir="/" md5sum="f28f37a8b06b0445c444e5846fa41df5" name="Net/Monitor/Exception.php" role="php" />
-   <file baseinstalldir="/" md5sum="f28f37a8b06b0445c444e5846fa41df5" name="Net/Monitor/Alert.php" role="php" />
-   <file baseinstalldir="/" md5sum="6b8ba8794fba0e6a0af1f711ac167a83" name="Net/Monitor/Service.php" role="php" />
-   <file baseinstalldir="/" md5sum="af31e7058f9ef515193a8ae91a073542" name="Net/Monitor/Alert/Growl.php" role="php" />
-   <file baseinstalldir="/" md5sum="194a10eace6611d713acdc38c157377a" name="Net/Monitor/Alert/Jabber.php" role="php" />
-   <file baseinstalldir="/" md5sum="bfd2382eb4629e5419be0ee25059eecf" name="Net/Monitor/Alert/SMS.php" role="php" />
-   <file baseinstalldir="/" md5sum="c503c7819562d22ffcab1326aa73786b" name="Net/Monitor/Alert/SMTP.php" role="php" />
-   <file baseinstalldir="/" md5sum="e4a020325eda271b8fe05b64d2fc548b" name="Net/Monitor/Service/DNS.php" role="php" />
-   <file baseinstalldir="/" md5sum="397a45a4e97832b01b79e4a90885dad4" name="Net/Monitor/Service/FTP.php" role="php" />
-   <file baseinstalldir="/" md5sum="83d6f9537213d317838c94fbd5067b8f" name="Net/Monitor/Service/HTTP.php" role="php" />
-   <file baseinstalldir="/" md5sum="af2f918c46d5e98d218df2ea50d7e1a3" name="Net/Monitor/Service/HTTPS.php" role="php" />
-   <file baseinstalldir="/" md5sum="c64c78645354cfbee96e447f6e060870" name="Net/Monitor/Service/SMTP.php" role="php" />
-   <file baseinstalldir="Net" md5sum="f015d118196f9d394fdd71df0d314b0e" name="tests/alert.phpt" role="test" />
-   <file baseinstalldir="Net" md5sum="27f9673b6f4e77285259460eb8c361a5" name="tests/custom.phpt" role="test" />
-   <file baseinstalldir="Net" md5sum="9747072466bb4ceba1f9401d9d56cb97" name="tests/diff.phpt" role="test" />
-   <file baseinstalldir="Net" md5sum="6338064961f092074a77f0902fe48258" name="tests/down.phpt" role="test" />
-   <file baseinstalldir="Net" md5sum="24c3ee62c1b49fb6748d57e201a50462" name="tests/multiple.phpt" role="test" />
-   <file baseinstalldir="Net" md5sum="231692c4e2ff4db4830fea8fb50ef364" name="tests/reset.phpt" role="test" />
-   <file baseinstalldir="Net" md5sum="4988a3df67feb4429665edabd8e1b4eb" name="tests/working.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="0b43ee87d0180a7d1189e636d64383b0" name="Net/Monitor.php" role="php" />
+   <file baseinstalldir="/" md5sum="a37e6b5625144cfee154e45e9ab92f82" name="Net/Monitor/Alert.php" role="php" />
+   <file baseinstalldir="/" md5sum="045d8331cf8c007163cd7c0e896688d0" name="Net/Monitor/Exception.php" role="php" />
+   <file baseinstalldir="/" md5sum="599b70df6b2a1abff1784feb04080959" name="Net/Monitor/Service.php" role="php" />
+   <file baseinstalldir="/" md5sum="c4403cef59654d45122170ca91b0d755" name="Net/Monitor/Alert/Growl.php" role="php" />
+   <file baseinstalldir="/" md5sum="50b65d57db2b83d271d5843fe6efafd5" name="Net/Monitor/Alert/Jabber.php" role="php" />
+   <file baseinstalldir="/" md5sum="5d500878ff406daa3b0a6671bd3d9f85" name="Net/Monitor/Alert/SMS.php" role="php" />
+   <file baseinstalldir="/" md5sum="9497f723fae10f08af20448a508170c5" name="Net/Monitor/Alert/SMTP.php" role="php" />
+   <file baseinstalldir="/" md5sum="45126527b4383e1ba83d48ed772591cd" name="Net/Monitor/Service/DNS.php" role="php" />
+   <file baseinstalldir="/" md5sum="0375741fdaa175eca58af4db8b4fc10a" name="Net/Monitor/Service/FTP.php" role="php" />
+   <file baseinstalldir="/" md5sum="634e7cf9ec905dd9dd3841aaf9024178" name="Net/Monitor/Service/HTTP.php" role="php" />
+   <file baseinstalldir="/" md5sum="e2871d8a8f6173cb5ba4795e78345f46" name="Net/Monitor/Service/HTTPS.php" role="php" />
+   <file baseinstalldir="/" md5sum="c3330b3f484c3b2f35b3507dd3058286" name="Net/Monitor/Service/SMTP.php" role="php" />
+   <file baseinstalldir="/" md5sum="32715d36b56ba6f8d6353c51a6a5fb04" name="tests/alert.php" role="test" />
+   <file baseinstalldir="Net" md5sum="502db9898ed5788fe166485c0067e500" name="tests/alert.phpt" role="test" />
+   <file baseinstalldir="Net" md5sum="097698b6e846141a384fc594a135ed35" name="tests/custom.phpt" role="test" />
+   <file baseinstalldir="Net" md5sum="afe22bebf64afd205f5e3e188b0afb2d" name="tests/diff.phpt" role="test" />
+   <file baseinstalldir="Net" md5sum="2eed89501616a58e0624b88bb8d1c1f3" name="tests/down.phpt" role="test" />
+   <file baseinstalldir="Net" md5sum="d68edbd571698124e757c9f78c8730f0" name="tests/multiple.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="da50065b1e3202924156a522d92dd3d5" name="tests/Net_MonitorTest.php" role="test" />
+   <file baseinstalldir="/" md5sum="f12372c4cc5f7eae1ce90ba2d7d8d775" name="tests/Net_Monitor_AlertTest.php" role="test" />
+   <file baseinstalldir="/" md5sum="bed31480b0c25dfd96a4fea84baf48b9" name="tests/Net_Monitor_Alert_GrowlTest.php" role="test" />
+   <file baseinstalldir="/" md5sum="72c9f04300366fa1c9db9dbc31fde2c9" name="tests/Net_Monitor_Alert_JabberTest.php" role="test" />
+   <file baseinstalldir="/" md5sum="6e0eacabd50d73f5703e59cd038f7cce" name="tests/Net_Monitor_Alert_SMSTest.php" role="test" />
+   <file baseinstalldir="/" md5sum="26534963781a2cfbd5d0145906c85cfc" name="tests/Net_Monitor_Alert_SMTPTest.php" role="test" />
+   <file baseinstalldir="/" md5sum="b7086805d32c686f1b115874b46d84a7" name="tests/Net_Monitor_ServiceDNSTest.php" role="test" />
+   <file baseinstalldir="/" md5sum="bf2154a6b558f757b4eec7faa2398684" name="tests/Net_Monitor_ServiceFTPTest.php" role="test" />
+   <file baseinstalldir="/" md5sum="9bf3d78b3f17eb0d977f6d7651b20377" name="tests/Net_Monitor_ServiceHTTPTest.php" role="test" />
+   <file baseinstalldir="/" md5sum="09a371ffb2e4e1be5a4d194cd99a5555" name="tests/Net_Monitor_ServiceSMTPTest.php" role="test" />
+   <file baseinstalldir="/" md5sum="0ccac7d5fa4b12e53b08b83927e405a4" name="tests/Net_Monitor_ServiceTest.php" role="test" />
+   <file baseinstalldir="Net" md5sum="2ad5d3812c04356b750ffc6fd5612746" name="tests/reset.phpt" role="test" />
+   <file baseinstalldir="Net" md5sum="479418144378d59cfe16e64316c49628" name="tests/working.phpt" role="test" />
+   <file baseinstalldir="/" md5sum="d26e83144d921e332d4a42c061a85c56" name="build.xml" role="data" />
+   <file baseinstalldir="/" md5sum="5e155aabb80343439b21ed3b9f264e0d" name="composer.json" role="data" />
+   <file baseinstalldir="/" md5sum="6c6ddf383564275ef41442d3fea6c322" name="README" role="data" />
   </dir>
  </contents>
  <dependencies>
@@ -106,9 +124,9 @@ Swap to Net_DNS2
     <min>0.0.3</min>
    </package>
    <package>
-     <name>Net_Growl</name>
-     <channel>pear.php.net</channel>
-     <min>2.7.0</min>
+    <name>Net_Growl</name>
+    <channel>pear.php.net</channel>
+    <min>2.7.0</min>
    </package>
   </optional>
  </dependencies>
@@ -246,10 +264,13 @@ Bug #14902 E_NOTICE error
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2011-08-17</date>
+   <date>2014-03-30</date>
    <license uri="http://www.php.net/license">PHP License</license>
    <notes>
-QA Release
+QA release
+19011 remove error_reporting (for PEAR QA team)	danielc
+19834 Net_Monitor_Exception not in repository	kguest
+19978 requires pear(Net/Growl.php)	doconnor
 BC Break - PHP4 support removed
 Swap to HTTP_Request2
 Swap to Net_DNS2
