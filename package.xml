@@ -57,7 +57,6 @@ BC Break - PHP4 support removed
    <file baseinstalldir="/" md5sum="634e7cf9ec905dd9dd3841aaf9024178" name="Net/Monitor/Service/HTTP.php" role="php" />
    <file baseinstalldir="/" md5sum="e2871d8a8f6173cb5ba4795e78345f46" name="Net/Monitor/Service/HTTPS.php" role="php" />
    <file baseinstalldir="/" md5sum="c3330b3f484c3b2f35b3507dd3058286" name="Net/Monitor/Service/SMTP.php" role="php" />
-   <file baseinstalldir="/" md5sum="32715d36b56ba6f8d6353c51a6a5fb04" name="tests/alert.php" role="test" />
    <file baseinstalldir="Net" md5sum="502db9898ed5788fe166485c0067e500" name="tests/alert.phpt" role="test" />
    <file baseinstalldir="Net" md5sum="097698b6e846141a384fc594a135ed35" name="tests/custom.phpt" role="test" />
    <file baseinstalldir="Net" md5sum="afe22bebf64afd205f5e3e188b0afb2d" name="tests/diff.phpt" role="test" />
